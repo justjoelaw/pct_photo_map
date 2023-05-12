@@ -14,9 +14,9 @@ jobs:
         
       - name: Create env file
         run: |
-          touch backend/.env
+          touch .env
           echo COSMOS_URI=${{ secrets.COSMOS_URI }} >> .env
-          cat backend/.env
+          cat .env
 
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
