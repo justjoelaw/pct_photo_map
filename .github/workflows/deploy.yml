@@ -18,6 +18,11 @@ jobs:
           login-server: ${{ secrets.ACR_REGISTRY }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
+          
+      - name: Print COSMOS_URI
+        run: echo $COSMOS_URI
+        env:
+          COSMOS_URI: ${{ secrets.COSMOS_URI }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
