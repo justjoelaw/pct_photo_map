@@ -8,8 +8,6 @@ RUN cd frontend && npm install && npm run build
 FROM node:14-slim AS backend-build
 WORKDIR /usr/src
 COPY backend/ ./backend/
-ARG COSMOS_URI
-ENV COSMOS_URI ${COSMOS_URI}
 RUN cd backend && npm install
 RUN ls
 
@@ -19,6 +17,8 @@ WORKDIR /root/
 COPY --from=frontend-build /usr/src/frontend/build ./frontend/build
 COPY --from=backend-build /usr/src/backend .
 RUN ls
+ARG COSMOS_URI
+ENV COSMOS_URI ${COSMOS_URI}
 
 EXPOSE 80
 
