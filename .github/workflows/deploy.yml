@@ -40,3 +40,4 @@ jobs:
           publish-profile: ${{ secrets.AZURE_APP_SERVICE_PUBLISH_PROFILE }}
           images: |
             ${{ secrets.ACR_REGISTRY }}/pctmaphelloworld:${{ github.sha }}
+          env: COSMOS_URI=${{ secrets.COSMOS_URI }}
