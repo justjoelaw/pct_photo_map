@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-const connectionString = process.env.COSMOS_URI || '';
+const connectionString = process.env.COSMOS_URI || 'mongodb://TESTING';
 
 const client = new MongoClient(connectionString);
 
