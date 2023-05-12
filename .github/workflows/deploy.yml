@@ -31,6 +31,8 @@ jobs:
           COSMOS_URI: ${{ secrets.COSMOS_URI }}
         with:
           context: .
+          build-args: |
+            "COSMOS_URI=${{ secrets.COSMOS_URI }}"
           push: true
           tags: ${{ secrets.ACR_REGISTRY }}/pctmaphelloworld:${{ github.sha }}
          
