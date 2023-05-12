@@ -11,6 +11,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        
+      - name: Create env file
+        run: |
+          touch backend/.env
+          echo COSMOS_URI=${{ secrets.ACR_REGISTRY }} >> .env
+          cat backend/.env
 
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
@@ -18,11 +24,6 @@ jobs:
           login-server: ${{ secrets.ACR_REGISTRY }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
-          
-      - name: Print COSMOS_URI
-        run: echo $COSMOS_URI
-        env:
-          COSMOS_URI: "TESTING 0"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
@@ -30,8 +31,6 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.ACR_REGISTRY }}/pctmaphelloworld:${{ github.sha }}
-        env:
-          COSMOS_URI: "TESTING 1"
 
       - name: Deploy to Azure App Services
         uses: azure/webapps-deploy@v2
@@ -40,5 +39,3 @@ jobs:
           publish-profile: ${{ secrets.AZURE_APP_SERVICE_PUBLISH_PROFILE }}
           images: |
             ${{ secrets.ACR_REGISTRY }}/pctmaphelloworld:${{ github.sha }}
-        env:
-          COSMOS_URI: "TESTING 2"
