@@ -25,6 +25,8 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.ACR_REGISTRY }}/pctmaphelloworld:${{ github.sha }}
+        env:
+          COSMOS_URI: ${{ secrets.COSMOS_URI }}
 
       - name: Deploy to Azure App Services
         uses: azure/webapps-deploy@v2
