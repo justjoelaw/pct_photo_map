@@ -22,7 +22,7 @@ jobs:
       - name: Print COSMOS_URI
         run: echo $COSMOS_URI
         env:
-          COSMOS_URI: ${{ secrets.COSMOS_URI }}
+          COSMOS_URI: "TESTING 0"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
