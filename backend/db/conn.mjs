@@ -2,7 +2,6 @@ import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
 
 const connectionString = process.env.COSMOS_URI || '';
-console.log('COSMOS_URI is ', process.env.COSMOS_URI);
 
 mongoose
   .connect(connectionString, {
