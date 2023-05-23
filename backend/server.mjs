@@ -7,7 +7,8 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { logger, logEvents } from './middleware/logger.js';
 import errorHandler from './middleware/errorHandler.js';
-import db from './db/conn.mjs';
+import db from './config/conn.mjs';
+import corsOptions from './config/corsOptions.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -16,7 +17,8 @@ const app = express();
 
 app.use(logger);
 
-app.use(cors());
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, './frontend/build')));
