@@ -1,5 +1,5 @@
-const { JournalEntry } = require('../models/JournalEntry.model.js');
-const asyncHandler = require('express-async-handler');
+import { JournalEntry } from '../models/JournalEntry.model.js';
+import { default as asyncHandler } from 'express-async-handler';
 
 // @desc Get all journalEntry
 // @route GET /journalEntry
@@ -123,10 +123,4 @@ const deleteJournalEntry = asyncHandler(async (req, res) => {
   res.json(reply);
 });
 
-module.exports = {
-  getAllJournalEntrys,
-  createNewJournalEntry,
-  getJournalEntryByID,
-  updateJournalEntry,
-  deleteJournalEntry,
-};
+export { getAllJournalEntrys, createNewJournalEntry, getJournalEntryByID, updateJournalEntry, deleteJournalEntry };
