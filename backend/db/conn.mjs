@@ -7,7 +7,7 @@ mongoose
   .connect(connectionString, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    dbName: 'sample_training',
+    dbName: 'pct-map',
   })
   .then(() => {
     console.log('MongoDB connected!');
