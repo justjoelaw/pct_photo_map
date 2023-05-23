@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import './loadEnvironment.mjs';
-import journalEntrys from './routes/journalEntryRoute.js';
+import journalEntrys from './routes/journalEntryRoutes.js';
+import users from './routes/userRoutes.js';
 import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -24,6 +25,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, './frontend/build')));
 
 app.use('/journalEntry', journalEntrys);
+
+app.use('/users', users);
 
 // start the Express server
 app.listen(PORT, () => {
