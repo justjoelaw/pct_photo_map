@@ -1,19 +1,23 @@
 import express from 'express';
 import cors from 'cors';
-import './loadEnvironment.mjs';
-import journalEntrys from './routes/journalEntryRoutes.js';
-import users from './routes/userRoutes.js';
+import './config/loadEnvironment.mjs';
+import journalEntrys from './routes/journalEntryRoutes.mjs';
+import users from './routes/userRoutes.mjs';
 import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { logger, logEvents } from './middleware/logger.js';
-import errorHandler from './middleware/errorHandler.js';
-import db from './config/conn.mjs';
-import corsOptions from './config/corsOptions.js';
+import { logger, logEvents } from './middleware/logger.mjs';
+import errorHandler from './middleware/errorHandler.mjs';
+import connectDB from './config/conn.mjs';
+import corsOptions from './config/corsOptions.mjs';
+import loadEnvironment from './config/loadEnvironment.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+loadEnvironment();
 const PORT = process.env.PORT || 5050;
+console.log('About to attempt connectDB using ', process.env.COSMOS_URI);
+connectDB();
 const app = express();
 
 app.use(logger);

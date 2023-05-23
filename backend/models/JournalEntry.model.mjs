@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const journalEntrySchema = new mongoose.Schema(
   {
@@ -33,8 +33,7 @@ const journalEntrySchema = new mongoose.Schema(
   }
 );
 
-const JournalEntry = mongoose.model('JournalEntry', journalEntrySchema, 'JournalEntry');
+// Create model if it doesn't exist
+const JournalEntry = mongoose.models.JournalEntry || mongoose.model('JournalEntry', journalEntrySchema, 'JournalEntry');
 
-module.exports = {
-  JournalEntry,
-};
+export { JournalEntry };

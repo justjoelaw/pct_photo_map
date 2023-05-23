@@ -1,5 +1,5 @@
-const express = require('express');
-const journalEntryController = require('../controllers/journalEntryController.js');
+import express from 'express';
+import * as journalEntryController from '../controllers/journalEntryController.mjs';
 
 const router = express.Router();
 
@@ -9,4 +9,4 @@ router.post('/', journalEntryController.createNewJournalEntry);
 router.patch('/', journalEntryController.updateJournalEntry);
 router.delete('/', journalEntryController.deleteJournalEntry);
 
-module.exports = router;
+export default router;
