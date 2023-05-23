@@ -1,4 +1,4 @@
-import { JournalEntry } from '../models/journalEntry.model.mjs';
+import { JournalEntry } from '../models/JournalEntry.model.js';
 import { default as asyncHandler } from 'express-async-handler';
 
 // @desc Get all journalEntry

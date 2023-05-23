@@ -1,16 +1,16 @@
 import express from 'express';
 import cors from 'cors';
-import './config/loadEnvironment.mjs';
-import journalEntrys from './routes/journalEntryRoutes.mjs';
-import users from './routes/userRoutes.mjs';
+import './config/loadEnvironment.js';
+import journalEntrys from './routes/journalEntryRoutes.js';
+import users from './routes/userRoutes.js';
 import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { logger, logEvents } from './middleware/logger.mjs';
-import errorHandler from './middleware/errorHandler.mjs';
-import connectDB from './config/conn.mjs';
-import corsOptions from './config/corsOptions.mjs';
-import loadEnvironment from './config/loadEnvironment.mjs';
+import { logger, logEvents } from './middleware/logger.js';
+import errorHandler from './middleware/errorHandler.js';
+import connectDB from './config/conn.js';
+import corsOptions from './config/corsOptions.js';
+import loadEnvironment from './config/loadEnvironment.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

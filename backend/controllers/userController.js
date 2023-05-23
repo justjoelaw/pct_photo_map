@@ -1,5 +1,5 @@
-import { User } from '../models/User.model.mjs';
-import { JournalEntry } from '../models/JournalEntry.model.mjs';
+import { User } from '../models/User.model.js';
+import { JournalEntry } from '../models/JournalEntry.model.js';
 import { default as asyncHandler } from 'express-async-handler';
 import bcrypt from 'bcrypt';
 
