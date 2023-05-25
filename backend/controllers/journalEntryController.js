@@ -38,10 +38,10 @@ const getJournalEntryByID = asyncHandler(async (req, res) => {
 // @route POST /journalEntry
 // @access Private
 const createNewJournalEntry = asyncHandler(async (req, res) => {
-  const { title, date, journalText, latitude, longitude } = req.body;
+  const { title, date, journalText, latitude, longitude, user } = req.body;
 
   // Confirm data
-  if (!title || !date || !journalText) {
+  if (!title || !date || !journalText || !user) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
@@ -53,7 +53,7 @@ const createNewJournalEntry = asyncHandler(async (req, res) => {
   }
 
   // Create and store the new user
-  const journalEntry = await JournalEntry.create({ title, date, journalText, latitude, longitude });
+  const journalEntry = await JournalEntry.create({ title, date, journalText, latitude, longitude, user });
 
   if (journalEntry) {
     // Created

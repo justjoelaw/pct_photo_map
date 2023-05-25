@@ -25,7 +25,11 @@ const logEvents = async (message, logFileName) => {
 
 const logger = (req, res, next) => {
   logEvents(`${req.method}\t${req.url}\t${req.headers.origin}`, 'reqLog.log');
-  console.log(`${req.method} ${req.path}`);
+  let nodeEnv = process.env.NODE_ENV?.trim();
+  if (nodeEnv !== 'test') {
+    console.log(`${req.method} ${req.path}`);
+  }
+
   next();
 };
 
