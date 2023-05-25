@@ -22,4 +22,4 @@ ENV COSMOS_URI ${COSMOS_URI}
 
 EXPOSE 80
 
-CMD ["node", "server.mjs"]
+CMD ["node", "server.js"]
