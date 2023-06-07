@@ -6,7 +6,7 @@ const connectDB = () => {
   let dbName = nodeEnv === 'test' ? 'pct-map-test' : 'pct-map';
 
   return new Promise((resolve, reject) => {
-    const connectionString = process.env.COSMOS_URI || '';
+    const connectionString = process.env.ATLAS_URI || '';
 
     mongoose
       .connect(connectionString, {
