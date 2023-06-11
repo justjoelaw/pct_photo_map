@@ -1,4 +1,5 @@
 import { JournalEntry } from '../models/JournalEntry.model.js';
+import { User } from '../models/User.model.js';
 import { default as asyncHandler } from 'express-async-handler';
 
 // @desc Get all journalEntry
@@ -40,9 +41,16 @@ const getJournalEntryByID = asyncHandler(async (req, res) => {
 const createNewJournalEntry = asyncHandler(async (req, res) => {
   const { title, date, journalText, latitude, longitude, user } = req.body;
 
+  const author = await User.findById(user);
+
   // Confirm data
   if (!title || !date || !journalText || !user) {
     return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  // Check Author exists
+  if (!author) {
+    return res.status(400).json({ message: 'User with this User ID does not exist' });
   }
 
   // Check for duplicate title
