@@ -3,6 +3,7 @@ import cors from 'cors';
 import './config/loadEnvironment.js';
 import journalEntrys from './routes/journalEntryRoutes.js';
 import users from './routes/userRoutes.js';
+import auth from './routes/authRoutes.js';
 import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -11,6 +12,7 @@ import errorHandler from './middleware/errorHandler.js';
 import connectDB from './config/conn.js';
 import corsOptions from './config/corsOptions.js';
 import loadEnvironment from './config/loadEnvironment.js';
+import cookieParser from 'cookie-parser';
 
 const setupServer = async () => {
   const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -28,7 +30,11 @@ const setupServer = async () => {
 
   app.use(express.json());
 
+  app.use(cookieParser());
+
   app.use(express.static(path.join(__dirname, './frontend/build')));
+
+  app.use('/auth', auth);
 
   app.use('/journalEntrys', journalEntrys);
 
