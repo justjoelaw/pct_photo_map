@@ -15,6 +15,7 @@ import JournalEntrysPage from './features/journalEntrys/JournalEntrysPage';
 import EditJournalEntry from './features/journalEntrys/EditJournalEntry';
 import NewJournalEntryForm from './features/journalEntrys/NewJournalEntryForm';
 import NewJournalEntry from './features/journalEntrys/NewJournalEntry';
+import Login from './features/auth/Login';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
       <Routes>
         <Route element={<Prefetch />}>
           <Route exact path='/' element={<Landing />} />
+          <Route path='login' element={<Login />} />
 
           <Route path='users'>
             <Route index element={<UsersPage />} />
