@@ -3,24 +3,40 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, Link } from 'react-router-dom';
 import Button from './Button.js';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { store } from '../app/store.js';
 
 import { useSendLogoutMutation } from '../features/auth/authApiSlice.js';
 import { selectCurrentToken } from '../features/auth/authSlice.js';
 
+import { useSelector } from 'react-redux';
+
 // Here, we display our Navbar
 const Navbar = () => {
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+
   const navigate = useNavigate();
   const onGoHomeClicked = () => navigate('/');
 
   const [sendLogout, { isLoading, isSuccess, isError, error }] = useSendLogoutMutation();
+
+  const accessToken = useSelector(selectCurrentToken);
 
   useEffect(() => {
     if (isSuccess) {
       navigate('/');
     }
   }, [isSuccess, navigate]);
+
+  useEffect(() => {
+    if (accessToken) {
+      console.log('Setting userLoggedIn=true');
+      setUserLoggedIn(true);
+    } else {
+      console.log('Setting userLoggedIn=true');
+      setUserLoggedIn(false);
+    }
+  }, [accessToken]);
 
   if (isLoading) return <p>Logging Out...</p>;
 
@@ -38,13 +54,11 @@ const Navbar = () => {
     </Button>
   );
 
-  const accessToken = selectCurrentToken(store.getState());
-
   return (
     <nav className='bg-gray-300 h-20'>
       <div>
         <FontAwesomeIcon icon={faHouse} size='lg' style={{ color: '#ee9c3f' }} onClick={onGoHomeClicked} />
-        {accessToken ? logoutButton : loginButton}
+        {userLoggedIn ? logoutButton : loginButton}
       </div>
     </nav>
   );

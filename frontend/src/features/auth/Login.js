@@ -4,12 +4,15 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setCredentials } from './authSlice';
 import Button from '../../components/Button';
+import usePersist from '../../hooks/usePersist';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const [login, { isLoading }] = useLoginMutation();
+
+  const [persist, setPersist] = usePersist();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,6 +36,10 @@ const Login = () => {
     }
   };
 
+  const handlePersistChange = () => {
+    setPersist((prev) => !prev);
+  };
+
   const content = (
     <form onSubmit={handleFormSubmit}>
       <label htmlFor='username'>Username:</label>
@@ -42,6 +49,8 @@ const Login = () => {
       <Button primary rounded onClick={handleFormSubmit}>
         Login
       </Button>
+      <label htmlFor='persist'>Trust this device?</label>
+      <input id='persist' type='checkbox' checked={persist} onChange={handlePersistChange} />
     </form>
   );
 
