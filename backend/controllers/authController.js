@@ -36,7 +36,7 @@ const login = asyncHandler(async (req, res) => {
 
   const accessToken = generateAccessToken(foundUser);
 
-  const refreshToken = jwt.sign({ username: foundUser.username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+  const refreshToken = jwt.sign({ username: foundUser.username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
   res.cookie('jwt', refreshToken, {
     httpOnly: true,

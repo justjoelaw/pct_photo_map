@@ -13,29 +13,30 @@ import EditUser from './features/users/EditUser';
 import Prefetch from './features/auth/Prefetch';
 import JournalEntrysPage from './features/journalEntrys/JournalEntrysPage';
 import EditJournalEntry from './features/journalEntrys/EditJournalEntry';
-import NewJournalEntryForm from './features/journalEntrys/NewJournalEntryForm';
 import NewJournalEntry from './features/journalEntrys/NewJournalEntry';
 import Login from './features/auth/Login';
+import PersistLogin from './features/auth/persistLogin';
 
 const App = () => {
   return (
     <div className='columns-1'>
       <Navbar />
       <Routes>
-        <Route element={<Prefetch />}>
-          <Route exact path='/' element={<Landing />} />
-          <Route path='login' element={<Login />} />
+        <Route path='login' element={<Login />} />
+        <Route element={<PersistLogin />}>
+          <Route element={<Prefetch />}>
+            <Route exact path='/' element={<Landing />} />
+            <Route path='users'>
+              <Route index element={<UsersPage />} />
+              <Route path='new' element={<NewUserForm />} />
+              <Route path=':id/edit' element={<EditUser />} />
+            </Route>
 
-          <Route path='users'>
-            <Route index element={<UsersPage />} />
-            <Route path='new' element={<NewUserForm />} />
-            <Route path=':id/edit' element={<EditUser />} />
-          </Route>
-
-          <Route path='journalEntrys'>
-            <Route index element={<JournalEntrysPage />} />
-            <Route path='new' element={<NewJournalEntry />} />
-            <Route path=':id/edit' element={<EditJournalEntry />} />
+            <Route path='journalEntrys'>
+              <Route index element={<JournalEntrysPage />} />
+              <Route path='new' element={<NewJournalEntry />} />
+              <Route path=':id/edit' element={<EditJournalEntry />} />
+            </Route>
           </Route>
         </Route>
       </Routes>
