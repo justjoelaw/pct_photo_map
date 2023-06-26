@@ -36,6 +36,8 @@ const JournalEntrysList = () => {
             <th>Title</th>
             <th>Date</th>
             <th>User</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
             <th></th>
           </tr>
         </thead>

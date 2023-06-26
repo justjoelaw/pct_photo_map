@@ -75,7 +75,7 @@ const createNewJournalEntry = asyncHandler(async (req, res) => {
 // @route PATCH /journalEntry
 // @access Private
 const updateJournalEntry = asyncHandler(async (req, res) => {
-  const { id, title, date, journalText } = req.body;
+  const { id, title, date, journalText, latitude, longitude } = req.body;
 
   // Confirm data
   if (!id || !title || !date || !journalText) {
@@ -100,6 +100,8 @@ const updateJournalEntry = asyncHandler(async (req, res) => {
   journalEntry.title = title;
   journalEntry.date = date;
   journalEntry.journalText = journalText;
+  journalEntry.latitude = latitude;
+  journalEntry.longitude = longitude;
 
   const updatedJournalEntry = await journalEntry.save();
 

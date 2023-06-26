@@ -1,9 +1,9 @@
 import express from 'express';
 import * as journalEntryController from '../controllers/journalEntryController.js';
-import verifyJWT from './verifyJWT.js';
+import verifyJWTIfRequired from './verifyJWTIfRequired.js';
 
 const router = express.Router();
-router.use(verifyJWT);
+router.use(verifyJWTIfRequired);
 
 router.get('/', journalEntryController.getAllJournalEntrys);
 router.get('/:id', journalEntryController.getJournalEntryByID);

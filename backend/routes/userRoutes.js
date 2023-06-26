@@ -1,9 +1,9 @@
 import express from 'express';
 import * as usersController from '../controllers/userController.js';
-import verifyJWT from './verifyJWT.js';
+import verifyJWTIfRequired from './verifyJWTIfRequired.js';
 
 const router = express.Router();
-router.use(verifyJWT);
+router.use(verifyJWTIfRequired);
 
 router.route('/').get(usersController.getAllUsers);
 router.route('/').post(usersController.createNewUser);
