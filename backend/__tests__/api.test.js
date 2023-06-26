@@ -5,6 +5,7 @@ let conn;
 let app;
 let testUserId;
 let testJournalEntryId;
+let accessToken;
 
 beforeAll(async () => {
   const serverConn = await setupServer();
@@ -12,6 +13,29 @@ beforeAll(async () => {
   conn = serverConn.conn;
   app = serverConn.app;
   console.log('Server started');
+
+  const userPayload = {
+    username: 'footest',
+    password: 'bartest',
+  };
+  const responseUserCreate = await request(app)
+    .post('/users')
+    .send(userPayload)
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json');
+
+  const loginPayload = {
+    username: 'footest',
+    password: 'bartest',
+  };
+
+  const responseLogin = await request(app).post('/auth').send(loginPayload).set('Content-Type', 'application/json').set('Accept', 'application/json');
+
+  accessToken = responseLogin.body.accessToken;
+  const responseUsers = await request(app)
+    .get('/users')
+    .set('Authorization', 'Bearer ' + accessToken);
+  testUserId = responseUsers.body[0]['_id'];
 });
 
 afterAll(async () => {
@@ -20,24 +44,12 @@ afterAll(async () => {
   await server.close();
 });
 
-test('Users API - GET all users (0 users)', async () => {
-  const response = await request(app).get('/users');
-  expect(response.status).toBe(400);
-});
-
-test('Users API - POST user', async () => {
-  const payload = {
-    username: 'footest',
-    password: 'bartest',
-  };
-  const responseCreate = await request(app).post('/users').send(payload).set('Content-Type', 'application/json').set('Accept', 'application/json');
-  expect(responseCreate.status).toBe(201);
-
-  // Test number users = 1
-  const responseUsers = await request(app).get('/users');
-  testUserId = responseUsers.body[0]['_id'];
-  expect(responseUsers.status).toBe(200);
-  expect(responseUsers.body.length).toBe(1);
+test('Users API - GET all users (1)', async () => {
+  const response = await request(app)
+    .get('/users')
+    .set('Authorization', 'Bearer ' + accessToken);
+  expect(response.status).toBe(200);
+  expect(response.body.length).toBe(1);
 });
 
 test('Users API - PATCH user', async () => {
@@ -46,8 +58,16 @@ test('Users API - PATCH user', async () => {
     username: 'footestUpdated',
     isAdmin: true,
   };
-  const responsePatch = await request(app).patch('/users').send(payload).set('Content-Type', 'application/json').set('Accept', 'application/json');
-  const responseUsersUpdated = await request(app).get('/users');
+
+  const responsePatch = await request(app)
+    .patch('/users')
+    .send(payload)
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json')
+    .set('Authorization', 'Bearer ' + accessToken);
+  const responseUsersUpdated = await request(app)
+    .get('/users')
+    .set('Authorization', 'Bearer ' + accessToken);
   expect(responsePatch.status).toBe(200);
   expect(responseUsersUpdated.body[0]['username']).toBe('footestUpdated');
   expect(responseUsersUpdated.body[0]['isAdmin']).toBe(true);
@@ -63,14 +83,17 @@ test('JournalEntry API - POST JournalEntry', async () => {
     user: testUserId,
   };
   const responseCreate = await request(app)
-    .post('/journalEntry')
+    .post('/journalEntrys')
     .send(payload)
     .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json');
+    .set('Accept', 'application/json')
+    .set('Authorization', 'Bearer ' + accessToken);
   expect(responseCreate.status).toBe(201);
 
   // Test number JournalEntry = 1
-  const responseJournalEntrys = await request(app).get('/journalEntry');
+  const responseJournalEntrys = await request(app)
+    .get('/journalEntrys')
+    .set('Authorization', 'Bearer ' + accessToken);
   expect(responseJournalEntrys.status).toBe(200);
   expect(responseJournalEntrys.body.length).toBe(1);
 });
@@ -79,12 +102,19 @@ test('Users API - Attempt DELETE user with JournalEntry', async () => {
   const payload = {
     id: testUserId,
   };
-  const responseDelete = await request(app).delete('/users').send(payload).set('Content-Type', 'application/json').set('Accept', 'application/json');
+  const responseDelete = await request(app)
+    .delete('/users')
+    .send(payload)
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json')
+    .set('Authorization', 'Bearer ' + accessToken);
   expect(responseDelete.status).toBe(400);
 });
 
 test('JournalEntry API - GET all JournalEntry', async () => {
-  const response = await request(app).get('/journalEntry');
+  const response = await request(app)
+    .get('/journalEntrys')
+    .set('Authorization', 'Bearer ' + accessToken);
   testJournalEntryId = response.body[0]['_id'];
   expect(response.status).toBe(200);
   expect(response.body.length).toBe(1);
@@ -99,11 +129,14 @@ test('JournalEntry API - PATCH JournalEntry', async () => {
     user: testUserId,
   };
   const responsePatch = await request(app)
-    .patch('/journalEntry')
+    .patch('/journalEntrys')
     .send(payload)
     .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json');
-  const responseJournalEntryUpdated = await request(app).get('/journalEntry');
+    .set('Accept', 'application/json')
+    .set('Authorization', 'Bearer ' + accessToken);
+  const responseJournalEntryUpdated = await request(app)
+    .get('/journalEntrys')
+    .set('Authorization', 'Bearer ' + accessToken);
   expect(responsePatch.status).toBe(200);
   expect(responseJournalEntryUpdated.body[0]['title']).toBe('Foo Title - Updated');
 });
@@ -113,13 +146,16 @@ test('JournalEntry API - DELETE JournalEntry', async () => {
     id: testJournalEntryId,
   };
   const responseDelete = await request(app)
-    .delete('/journalEntry')
+    .delete('/journalEntrys')
     .send(payload)
     .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json');
+    .set('Accept', 'application/json')
+    .set('Authorization', 'Bearer ' + accessToken);
   expect(responseDelete.status).toBe(200);
 
-  const responseUsersUpdated = await request(app).get('/journalEntry');
+  const responseUsersUpdated = await request(app)
+    .get('/journalEntrys')
+    .set('Authorization', 'Bearer ' + accessToken);
   expect(responseUsersUpdated.status).toBe(400);
 });
 
@@ -127,9 +163,16 @@ test('Users API - DELETE user', async () => {
   const payload = {
     id: testUserId,
   };
-  const responseDelete = await request(app).delete('/users').send(payload).set('Content-Type', 'application/json').set('Accept', 'application/json');
+  const responseDelete = await request(app)
+    .delete('/users')
+    .send(payload)
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json')
+    .set('Authorization', 'Bearer ' + accessToken);
   expect(responseDelete.status).toBe(200);
 
-  const responseUsersUpdated = await request(app).get('/users');
+  const responseUsersUpdated = await request(app)
+    .get('/users')
+    .set('Authorization', 'Bearer ' + accessToken);
   expect(responseUsersUpdated.status).toBe(400);
 });

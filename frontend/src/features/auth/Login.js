@@ -32,6 +32,9 @@ const Login = () => {
       setPassword('');
       navigate('/');
     } catch (err) {
+      if (err.status === 401) {
+        alert('Invalid username or password');
+      }
       console.log(err);
     }
   };

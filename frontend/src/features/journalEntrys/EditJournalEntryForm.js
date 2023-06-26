@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Button from '../../components/Button';
 import { useUpdateJournalEntryMutation, useDeleteJournalEntryMutation } from './journalEntrysApiSlice';
 import { useNavigate } from 'react-router-dom';
+import { verifyLocation } from './utils/journalEntryUtils';
 
 const EditJournalEntryForm = ({ users, journalEntry }) => {
   const [updateJournalEntry, { isLoading, isSuccess, isError, error }] = useUpdateJournalEntryMutation();
@@ -13,6 +14,9 @@ const EditJournalEntryForm = ({ users, journalEntry }) => {
   const [date, setDate] = useState(journalEntry.date.substring(0, 10));
   const [journalText, setJournalText] = useState(journalEntry.journalText);
   const [userId, setUserId] = useState(journalEntry.user);
+  const [latitude, setLatitude] = useState(journalEntry.latitude || 0);
+  const [longitude, setLongitude] = useState(journalEntry.longitude || 0);
+  const [validLocation, setValidLocation] = useState(true);
 
   useEffect(() => {
     if (isSuccess || isDelSuccess) {
@@ -23,6 +27,10 @@ const EditJournalEntryForm = ({ users, journalEntry }) => {
       navigate('/journalEntrys');
     }
   }, [isSuccess, isDelSuccess, navigate]);
+
+  useEffect(() => {
+    verifyLocation(latitude, longitude, setValidLocation);
+  }, [latitude, longitude]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -40,6 +48,14 @@ const EditJournalEntryForm = ({ users, journalEntry }) => {
     setUserId(e.target.value);
   };
 
+  const handleLatitudeChange = (e) => {
+    setLatitude(e.target.value);
+  };
+
+  const handleLongitudeChange = (e) => {
+    setLongitude(e.target.value);
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const noteBody = {
@@ -48,9 +64,13 @@ const EditJournalEntryForm = ({ users, journalEntry }) => {
       journalText,
       date,
       user: userId,
+      latitude,
+      longitude,
     };
     if (canSave) {
       await updateJournalEntry(noteBody);
+    } else if (!validLocation) {
+      alert('Invalid latitude/longitude');
     } else {
       alert('Please ensure all fields are entered');
     }
@@ -63,7 +83,7 @@ const EditJournalEntryForm = ({ users, journalEntry }) => {
     });
   };
 
-  const canSave = [title, journalText, date, userId].every(Boolean) && !isLoading;
+  const canSave = [title, journalText, date, userId].every(Boolean) && !isLoading && validLocation;
 
   const errClass = isError ? 'errmsg' : 'offscreen';
 
@@ -90,11 +110,15 @@ const EditJournalEntryForm = ({ users, journalEntry }) => {
         <select id='username' name='username' value={userId} onChange={handleUserIdChange}>
           {options}
         </select>
+        <label htmlFor='latitude'>Latitude:</label>
+        <input id='latitude' type='number' value={latitude} onChange={handleLatitudeChange} />
+        <label htmlFor='longitude'>Longitude:</label>
+        <input id='longitude' type='number' value={longitude} onChange={handleLongitudeChange} />
         <Button primary rounded onClick={handleFormSubmit}>
           Save Entry
         </Button>
         <Button warning rounded onClick={handleDeleteClick}>
-          Delete User
+          Delete Entry
         </Button>
       </form>
     </div>

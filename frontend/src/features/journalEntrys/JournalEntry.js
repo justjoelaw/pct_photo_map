@@ -19,6 +19,8 @@ const JournalEntry = ({ journalEntryId }) => {
       <td>{journalEntry.title}</td>
       <td>{journalEntry.date}</td>
       <td>{journalEntry.user}</td>
+      <td>{journalEntry.latitude}</td>
+      <td>{journalEntry.longitude}</td>
       <td>
         <Button primary onClick={handleEdit}>
           <FontAwesomeIcon icon={faPenToSquare} />
