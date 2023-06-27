@@ -21,6 +21,8 @@ const JournalEntry = ({ journalEntryId }) => {
       <td>{journalEntry.user}</td>
       <td>{journalEntry.latitude}</td>
       <td>{journalEntry.longitude}</td>
+      <td>{journalEntry.trail}</td>
+      <td>{journalEntry.isPublic ? <FontAwesomeIcon icon={faSquareCheck} /> : <FontAwesomeIcon icon={faSquare} />}</td>
       <td>
         <Button primary onClick={handleEdit}>
           <FontAwesomeIcon icon={faPenToSquare} />

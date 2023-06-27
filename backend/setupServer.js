@@ -3,6 +3,7 @@ import cors from 'cors';
 import './config/loadEnvironment.js';
 import journalEntrys from './routes/journalEntryRoutes.js';
 import users from './routes/userRoutes.js';
+import trails from './routes/trailRoutes.js';
 import auth from './routes/authRoutes.js';
 import path from 'path';
 import { dirname } from 'path';
@@ -39,6 +40,8 @@ const setupServer = async () => {
   app.use('/journalEntrys', journalEntrys);
 
   app.use('/users', users);
+
+  app.use('/trails', trails);
 
   // start the Express server
   let server = app.listen(PORT, () => {

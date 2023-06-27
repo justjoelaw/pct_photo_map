@@ -6,6 +6,7 @@ let app;
 let testUserId;
 let testJournalEntryId;
 let accessToken;
+let testTrailId;
 
 beforeAll(async () => {
   const serverConn = await setupServer();
@@ -32,10 +33,26 @@ beforeAll(async () => {
   const responseLogin = await request(app).post('/auth').send(loginPayload).set('Content-Type', 'application/json').set('Accept', 'application/json');
 
   accessToken = responseLogin.body.accessToken;
+
   const responseUsers = await request(app)
     .get('/users')
     .set('Authorization', 'Bearer ' + accessToken);
   testUserId = responseUsers.body[0]['_id'];
+
+  const trailPayload = {
+    name: 'Pacific Crest Trail',
+  };
+  const responseTrailCreate = await request(app)
+    .post('/trails')
+    .send(trailPayload)
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json')
+    .set('Authorization', 'Bearer ' + accessToken);
+
+  const responseTrails = await request(app)
+    .get('/trails')
+    .set('Authorization', 'Bearer ' + accessToken);
+  testTrailId = responseTrails.body[0]['_id'];
 });
 
 afterAll(async () => {
@@ -81,6 +98,7 @@ test('JournalEntry API - POST JournalEntry', async () => {
     date: '2023-01-01',
     journalText: 'Lorem ipsum dolor sit',
     user: testUserId,
+    trail: testTrailId,
   };
   const responseCreate = await request(app)
     .post('/journalEntrys')
@@ -127,6 +145,7 @@ test('JournalEntry API - PATCH JournalEntry', async () => {
     date: '2023-01-01',
     journalText: 'Lorem ipsum dolor sit',
     user: testUserId,
+    trail: testTrailId,
   };
   const responsePatch = await request(app)
     .patch('/journalEntrys')
@@ -134,9 +153,11 @@ test('JournalEntry API - PATCH JournalEntry', async () => {
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
     .set('Authorization', 'Bearer ' + accessToken);
+
   const responseJournalEntryUpdated = await request(app)
     .get('/journalEntrys')
     .set('Authorization', 'Bearer ' + accessToken);
+
   expect(responsePatch.status).toBe(200);
   expect(responseJournalEntryUpdated.body[0]['title']).toBe('Foo Title - Updated');
 });

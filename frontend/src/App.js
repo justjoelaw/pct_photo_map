@@ -6,14 +6,21 @@ import { Route, Routes } from 'react-router-dom';
 // We import all the components we need in our app
 import Navbar from './components/navbar';
 import Landing from './features/auth/Landing';
-import UsersList from './features/users/UsersList';
+
+import Prefetch from './features/auth/Prefetch';
+
 import NewUserForm from './features/users/NewUserForm';
 import UsersPage from './features/users/UsersPage';
 import EditUser from './features/users/EditUser';
-import Prefetch from './features/auth/Prefetch';
+
 import JournalEntrysPage from './features/journalEntrys/JournalEntrysPage';
 import EditJournalEntry from './features/journalEntrys/EditJournalEntry';
 import NewJournalEntry from './features/journalEntrys/NewJournalEntry';
+
+import TrailsPage from './features/trails/TrailsPage';
+import NewTrailForm from './features/trails/NewTrailForm';
+import EditTrail from './features/trails/EditTrail';
+
 import Login from './features/auth/Login';
 import PersistLogin from './features/auth/persistLogin';
 
@@ -36,6 +43,12 @@ const App = () => {
               <Route index element={<JournalEntrysPage />} />
               <Route path='new' element={<NewJournalEntry />} />
               <Route path=':id/edit' element={<EditJournalEntry />} />
+            </Route>
+
+            <Route path='trails'>
+              <Route index element={<TrailsPage />} />
+              <Route path='new' element={<NewTrailForm />} />
+              <Route path=':id/edit' element={<EditTrail />} />
             </Route>
           </Route>
         </Route>

@@ -27,6 +27,15 @@ const journalEntrySchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    trail: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Trail',
+      required: true,
+    },
+    isPublic: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

@@ -38,6 +38,8 @@ const JournalEntrysList = () => {
             <th>User</th>
             <th>Latitude</th>
             <th>Longitude</th>
+            <th>Trail</th>
+            <th>Public</th>
             <th></th>
           </tr>
         </thead>

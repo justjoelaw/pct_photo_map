@@ -51,8 +51,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: 'DELETE',
         body: { id },
       }),
+      invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg.id }],
     }),
-    invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg.id }],
   }),
 });
 
