@@ -1,5 +1,6 @@
 import { JournalEntry } from '../models/JournalEntry.model.js';
 import { User } from '../models/User.model.js';
+import { Trail } from '../models/Trail.model.js';
 import { default as asyncHandler } from 'express-async-handler';
 
 // @desc Get all journalEntry
@@ -39,29 +40,36 @@ const getJournalEntryByID = asyncHandler(async (req, res) => {
 // @route POST /journalEntry
 // @access Private
 const createNewJournalEntry = asyncHandler(async (req, res) => {
-  const { title, date, journalText, latitude, longitude, user } = req.body;
+  const { title, date, journalText, latitude, longitude, user, trail, isPublic } = req.body;
 
-  const author = await User.findById(user);
+  const thisUser = await User.findById(user);
+
+  const thisTrail = await Trail.findById(trail);
 
   // Confirm data
-  if (!title || !date || !journalText || !user) {
+  if (!title || !date || !journalText || !user || !trail) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
-  // Check Author exists
-  if (!author) {
+  // Check thisUser exists
+  if (!thisUser) {
     return res.status(400).json({ message: 'User with this User ID does not exist' });
   }
 
+  // Check thisTrail exists
+  if (!thisTrail) {
+    return res.status(400).json({ message: 'Trail with this Trail ID does not exist' });
+  }
+
   // Check for duplicate title
-  const duplicate = await JournalEntry.findOne({ title }).lean().exec();
+  const duplicate = await JournalEntry.findOne({ title, user }).lean().exec();
 
   if (duplicate) {
     return res.status(409).json({ message: 'Duplicate journalEntry title' });
   }
 
   // Create and store the new user
-  const journalEntry = await JournalEntry.create({ title, date, journalText, latitude, longitude, user });
+  const journalEntry = await JournalEntry.create({ title, date, journalText, latitude, longitude, user, trail, isPublic });
 
   if (journalEntry) {
     // Created
@@ -75,22 +83,24 @@ const createNewJournalEntry = asyncHandler(async (req, res) => {
 // @route PATCH /journalEntry
 // @access Private
 const updateJournalEntry = asyncHandler(async (req, res) => {
-  const { id, title, date, journalText, latitude, longitude } = req.body;
+  const { id, title, date, journalText, latitude, longitude, trail, isPublic } = req.body;
 
   // Confirm data
-  if (!id || !title || !date || !journalText) {
+  if (!id || !title || !date || !journalText || !trail) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
-  // Does the note exist to update?
+  // Does the JE exist to update?
   const journalEntry = await JournalEntry.findById(id).exec();
 
   if (!journalEntry) {
     return res.status(400).json({ message: 'JournalEntry not found' });
   }
 
+  const user = journalEntry.user;
+
   // Check for duplicate
-  const duplicate = await JournalEntry.findOne({ title }).lean().exec();
+  const duplicate = await JournalEntry.findOne({ title, user }).lean().exec();
 
   // Allow renaming of the original note
   if (duplicate && duplicate?.title.toString() !== title) {
@@ -102,6 +112,8 @@ const updateJournalEntry = asyncHandler(async (req, res) => {
   journalEntry.journalText = journalText;
   journalEntry.latitude = latitude;
   journalEntry.longitude = longitude;
+  journalEntry.trail = trail;
+  journalEntry.isPublic = isPublic;
 
   const updatedJournalEntry = await journalEntry.save();
 

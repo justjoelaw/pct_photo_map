@@ -4,7 +4,7 @@ import { useUpdateJournalEntryMutation, useDeleteJournalEntryMutation } from './
 import { useNavigate } from 'react-router-dom';
 import { verifyLocation } from './utils/journalEntryUtils';
 
-const EditJournalEntryForm = ({ users, journalEntry }) => {
+const EditJournalEntryForm = ({ users, trails, journalEntry }) => {
   const [updateJournalEntry, { isLoading, isSuccess, isError, error }] = useUpdateJournalEntryMutation();
   const [deleteJournalEntry, { isSuccess: isDelSuccess, isError: isDelError, error: delError }] = useDeleteJournalEntryMutation();
 
@@ -14,9 +14,11 @@ const EditJournalEntryForm = ({ users, journalEntry }) => {
   const [date, setDate] = useState(journalEntry.date.substring(0, 10));
   const [journalText, setJournalText] = useState(journalEntry.journalText);
   const [userId, setUserId] = useState(journalEntry.user);
+  const [trailId, setTrailId] = useState(journalEntry.trail);
   const [latitude, setLatitude] = useState(journalEntry.latitude || 0);
   const [longitude, setLongitude] = useState(journalEntry.longitude || 0);
   const [validLocation, setValidLocation] = useState(true);
+  const [isPublic, setIsPublic] = useState(journalEntry.isPublic);
 
   useEffect(() => {
     if (isSuccess || isDelSuccess) {
@@ -48,12 +50,20 @@ const EditJournalEntryForm = ({ users, journalEntry }) => {
     setUserId(e.target.value);
   };
 
+  const handleTrailIdChange = (e) => {
+    setTrailId(e.target.value);
+  };
+
   const handleLatitudeChange = (e) => {
     setLatitude(e.target.value);
   };
 
   const handleLongitudeChange = (e) => {
     setLongitude(e.target.value);
+  };
+
+  const handleIsPublicChange = (e) => {
+    setIsPublic(!isPublic);
   };
 
   const handleFormSubmit = async (e) => {
@@ -66,6 +76,8 @@ const EditJournalEntryForm = ({ users, journalEntry }) => {
       user: userId,
       latitude,
       longitude,
+      trail: trailId,
+      isPublic,
     };
     if (canSave) {
       await updateJournalEntry(noteBody);
@@ -83,15 +95,24 @@ const EditJournalEntryForm = ({ users, journalEntry }) => {
     });
   };
 
-  const canSave = [title, journalText, date, userId].every(Boolean) && !isLoading && validLocation;
+  const canSave = [title, journalText, date, userId, trailId].every(Boolean) && !isLoading && validLocation;
 
   const errClass = isError ? 'errmsg' : 'offscreen';
 
-  const options = users.map((user) => {
+  const userOptions = users.map((user) => {
     return (
       <option key={user.id} value={user.id}>
         {' '}
         {user.username}
+      </option>
+    );
+  });
+
+  const trailOptions = trails.map((trail) => {
+    return (
+      <option key={trail.id} value={trail.id}>
+        {' '}
+        {trail.name}
       </option>
     );
   });
@@ -108,12 +129,18 @@ const EditJournalEntryForm = ({ users, journalEntry }) => {
         <textarea id='journalText' name='journalText' type='text' value={journalText} onChange={handleJournalTextChange} />
         <label htmlFor='user'>User:</label>
         <select id='username' name='username' value={userId} onChange={handleUserIdChange}>
-          {options}
+          {userOptions}
+        </select>
+        <label htmlFor='trail'>Trail:</label>
+        <select id='trail' name='trail' value={trailId} onChange={handleTrailIdChange}>
+          {trailOptions}
         </select>
         <label htmlFor='latitude'>Latitude:</label>
         <input id='latitude' type='number' value={latitude} onChange={handleLatitudeChange} />
         <label htmlFor='longitude'>Longitude:</label>
         <input id='longitude' type='number' value={longitude} onChange={handleLongitudeChange} />
+        <label htmlFor='isPublic'>Public:</label>
+        <input id='isPublic' name='isPublic' type='checkbox' checked={isPublic} value={isPublic} onChange={handleIsPublicChange} />
         <Button primary rounded onClick={handleFormSubmit}>
           Save Entry
         </Button>

@@ -10,6 +10,9 @@ const Landing = () => {
       <p>
         <Link to='/journalEntrys'>View Journal Entries</Link>
       </p>
+      <p>
+        <Link to='/trails'>View Trails</Link>
+      </p>
     </>
   );
 

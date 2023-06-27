@@ -8,8 +8,6 @@ const JWTExemptReqs = [
 ];
 
 const verifyJWTIfRequired = (req, res, next) => {
-  console.log(req.baseUrl, req.method);
-
   const isExempt = JWTExemptReqs.find((exemptReq) => exemptReq.path === req.baseUrl && exemptReq.method === req.method);
 
   if (isExempt) {

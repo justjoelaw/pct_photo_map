@@ -51,8 +51,8 @@ export const journalEntrysApiSlice = apiSlice.injectEndpoints({
         method: 'DELETE',
         body: { id },
       }),
+      invalidatesTags: (result, error, arg) => [{ type: 'JournalEntry', id: arg.id }],
     }),
-    invalidatesTags: (result, error, arg) => [{ type: 'JournalEntry', id: arg.id }],
   }),
 });
 
