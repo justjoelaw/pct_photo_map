@@ -13,6 +13,9 @@ const Landing = () => {
       <p>
         <Link to='/trails'>View Trails</Link>
       </p>
+      <p>
+        <Link to='/home'>View Homepage</Link>
+      </p>
     </>
   );
 

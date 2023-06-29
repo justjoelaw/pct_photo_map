@@ -23,6 +23,7 @@ import EditTrail from './features/trails/EditTrail';
 
 import Login from './features/auth/Login';
 import PersistLogin from './features/auth/persistLogin';
+import HomePage from './features/home/HomePage';
 
 const App = () => {
   return (
@@ -33,6 +34,9 @@ const App = () => {
         <Route element={<PersistLogin />}>
           <Route element={<Prefetch />}>
             <Route exact path='/' element={<Landing />} />
+
+            <Route path='/home' element={<HomePage />} />
+
             <Route path='users'>
               <Route index element={<UsersPage />} />
               <Route path='new' element={<NewUserForm />} />

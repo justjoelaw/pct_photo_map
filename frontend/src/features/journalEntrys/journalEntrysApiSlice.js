@@ -1,5 +1,6 @@
 import { createSelector, createEntityAdapter } from '@reduxjs/toolkit';
 import { apiSlice } from '../../app/api/apiSlice';
+import { useSelector } from 'react-redux';
 
 const journalEntrysAdapter = createEntityAdapter({});
 
@@ -61,7 +62,7 @@ export const { useGetJournalEntrysQuery, useAddNewJournalEntryMutation, useUpdat
 
 export const selectJournalEntrysResult = journalEntrysApiSlice.endpoints.getJournalEntrys.select();
 
-const selectJournalEntrysData = createSelector(selectJournalEntrysResult, (journalEntrysResult) => journalEntrysResult.data);
+export const selectJournalEntrysData = createSelector(selectJournalEntrysResult, (journalEntrysResult) => journalEntrysResult.data);
 
 export const { selectAll: selectAllJournalEntrys, selectById: selectJournalEntryById } = journalEntrysAdapter.getSelectors(
   (state) => selectJournalEntrysData(state) ?? initialState
