@@ -24,6 +24,8 @@ import EditTrail from './features/trails/EditTrail';
 import Login from './features/auth/Login';
 import PersistLogin from './features/auth/persistLogin';
 import HomePage from './features/home/HomePage';
+import AdminRequired from './features/auth/AdminRequired';
+import Register from './features/auth/Register';
 
 const App = () => {
   return (
@@ -31,28 +33,37 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path='login' element={<Login />} />
+        <Route path='register' element={<Register />} />
         <Route element={<PersistLogin />}>
           <Route element={<Prefetch />}>
             <Route exact path='/' element={<Landing />} />
 
-            <Route path='/home' element={<HomePage />} />
+            <Route path='home'>
+              <Route index element={<HomePage />} />
+            </Route>
 
             <Route path='users'>
-              <Route index element={<UsersPage />} />
+              <Route element={<AdminRequired />}>
+                <Route index element={<UsersPage />} />
+              </Route>
               <Route path='new' element={<NewUserForm />} />
               <Route path=':id/edit' element={<EditUser />} />
             </Route>
 
             <Route path='journalEntrys'>
-              <Route index element={<JournalEntrysPage />} />
+              <Route element={<AdminRequired />}>
+                <Route index element={<JournalEntrysPage />} />
+              </Route>
               <Route path='new' element={<NewJournalEntry />} />
               <Route path=':id/edit' element={<EditJournalEntry />} />
             </Route>
 
             <Route path='trails'>
-              <Route index element={<TrailsPage />} />
-              <Route path='new' element={<NewTrailForm />} />
-              <Route path=':id/edit' element={<EditTrail />} />
+              <Route element={<AdminRequired />}>
+                <Route index element={<TrailsPage />} />
+                <Route path='new' element={<NewTrailForm />} />
+                <Route path=':id/edit' element={<EditTrail />} />
+              </Route>
             </Route>
           </Route>
         </Route>

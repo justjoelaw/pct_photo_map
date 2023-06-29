@@ -29,6 +29,7 @@ const verifyJWTIfRequired = (req, res, next) => {
 
       req.user = decoded.UserInfo.username;
       req.isAdmin = decoded.UserInfo.isAdmin;
+      req.userId = decoded.UserInfo.userId;
       next();
     });
   }

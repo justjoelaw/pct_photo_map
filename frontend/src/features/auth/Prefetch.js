@@ -15,6 +15,7 @@ const Prefetch = () => {
       console.log('unsubscribing');
       users.unsubscribe();
       journalEntrys.unsubscribe();
+      trails.unsubscribe();
     };
   }, []);
 
