@@ -9,6 +9,7 @@ const generateAccessToken = (foundUser) => {
       UserInfo: {
         username: foundUser.username,
         isAdmin: foundUser.isAdmin,
+        userId: foundUser.id,
       },
     },
     process.env.ACCESS_TOKEN_SECRET,
