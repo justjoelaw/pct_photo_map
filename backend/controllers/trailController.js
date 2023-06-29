@@ -21,6 +21,10 @@ const getAllTrails = asyncHandler(async (req, res) => {
 // @route POST /trails
 // @access Private
 const createNewTrail = asyncHandler(async (req, res) => {
+  if (!req.isAdmin) {
+    res.status(403).send('You do not have permission to access this resource');
+  }
+
   const { name } = req.body;
 
   // Confirm data
@@ -35,7 +39,7 @@ const createNewTrail = asyncHandler(async (req, res) => {
     return res.status(409).json({ message: 'Duplicate trail name' });
   }
 
-  // Create and store new user
+  // Create and store new trail
   const trail = await Trail.create({ name });
 
   if (trail) {
@@ -50,6 +54,10 @@ const createNewTrail = asyncHandler(async (req, res) => {
 // @route PATCH /trails
 // @access Private
 const updateTrail = asyncHandler(async (req, res) => {
+  if (!req.isAdmin) {
+    res.status(403).send('You do not have permission to access this resource');
+  }
+
   const { id, name } = req.body;
 
   // Confirm data
@@ -83,6 +91,10 @@ const updateTrail = asyncHandler(async (req, res) => {
 // @route DELETE /trails
 // @access Private
 const deleteTrail = asyncHandler(async (req, res) => {
+  if (!req.isAdmin) {
+    res.status(403).send('You do not have permission to access this resource');
+  }
+
   const { id } = req.body;
 
   // Confirm data

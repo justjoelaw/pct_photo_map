@@ -3,6 +3,7 @@ import Button from '../../components/Button';
 import { useUpdateJournalEntryMutation, useDeleteJournalEntryMutation } from './journalEntrysApiSlice';
 import { useNavigate } from 'react-router-dom';
 import { verifyLocation } from './utils/journalEntryUtils';
+import useAuth from '../../hooks/useAuth';
 
 const EditJournalEntryForm = ({ users, trails, journalEntry }) => {
   const [updateJournalEntry, { isLoading, isSuccess, isError, error }] = useUpdateJournalEntryMutation();
@@ -10,10 +11,12 @@ const EditJournalEntryForm = ({ users, trails, journalEntry }) => {
 
   const navigate = useNavigate();
 
+  const { userId: activeUserId, isAdmin } = useAuth();
+
   const [title, setTitle] = useState(journalEntry.title);
   const [date, setDate] = useState(journalEntry.date.substring(0, 10));
   const [journalText, setJournalText] = useState(journalEntry.journalText);
-  const [userId, setUserId] = useState(journalEntry.user);
+  const [userId, setUserId] = useState(isAdmin ? journalEntry.user : activeUserId);
   const [trailId, setTrailId] = useState(journalEntry.trail);
   const [latitude, setLatitude] = useState(journalEntry.latitude || 0);
   const [longitude, setLongitude] = useState(journalEntry.longitude || 0);
@@ -26,7 +29,11 @@ const EditJournalEntryForm = ({ users, trails, journalEntry }) => {
       setJournalText('');
       setDate('');
       setUserId(users[0].id);
-      navigate('/journalEntrys');
+      if (isAdmin) {
+        navigate('/journalEntrys');
+      } else {
+        navigate('/home');
+      }
     }
   }, [isSuccess, isDelSuccess, navigate]);
 
@@ -79,6 +86,12 @@ const EditJournalEntryForm = ({ users, trails, journalEntry }) => {
       trail: trailId,
       isPublic,
     };
+
+    if (!isAdmin) {
+      // Prevent non-admin from adding entry for another user
+      noteBody.user = activeUserId;
+    }
+
     if (canSave) {
       await updateJournalEntry(noteBody);
     } else if (!validLocation) {
@@ -127,10 +140,15 @@ const EditJournalEntryForm = ({ users, trails, journalEntry }) => {
         <input id='date' name='date' type='date' value={date} onChange={handleDateChange} />
         <label htmlFor='text'>Text:</label>
         <textarea id='journalText' name='journalText' type='text' value={journalText} onChange={handleJournalTextChange} />
-        <label htmlFor='user'>User:</label>
-        <select id='username' name='username' value={userId} onChange={handleUserIdChange}>
-          {userOptions}
-        </select>
+        {isAdmin && (
+          <>
+            <label htmlFor='user'>User:</label>
+            <select id='username' name='username' value={userId} onChange={handleUserIdChange}>
+              {userOptions}
+            </select>
+          </>
+        )}
+
         <label htmlFor='trail'>Trail:</label>
         <select id='trail' name='trail' value={trailId} onChange={handleTrailIdChange}>
           {trailOptions}

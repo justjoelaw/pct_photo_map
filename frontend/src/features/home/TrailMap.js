@@ -4,12 +4,13 @@ import JournalEntryMarker from './JournalEntryMarker';
 
 function SetBoundsComponent({ bounds }) {
   const map = useMap();
+  console.log('bounds are ', bounds);
   map.fitBounds(bounds);
   return null;
 }
 
 function TrailMap({ trailId, filteredJournalEntrys }) {
-  const [coordinates, setCoordinates] = useState([]);
+  const [coordinates, setCoordinates] = useState([[0, 0]]);
   const [bounds, setBounds] = useState([
     [0, 0],
     [10, 10],
@@ -25,8 +26,6 @@ function TrailMap({ trailId, filteredJournalEntrys }) {
       const jsonData = await response.json();
       const formattedCoordinates = jsonData.map((coord) => [coord.latitude, coord.longitude]);
       setCoordinates(formattedCoordinates);
-      // map.fitBounds([coordinates[0], coordinates[1]]);
-      // console.log([formattedCoordinates[0], formattedCoordinates.slice(-1)[0]]);
     } catch (error) {
       console.error(error);
     }
@@ -53,7 +52,6 @@ function TrailMap({ trailId, filteredJournalEntrys }) {
     const leafletPolyline = polylineRef.current;
     if (leafletPolyline) {
       const polylineBounds = leafletPolyline.getBounds();
-      console.log(polylineBounds);
       setBounds(polylineBounds);
     }
   }, [coordinates, trailId]);

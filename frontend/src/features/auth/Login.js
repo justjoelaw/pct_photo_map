@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { setCredentials } from './authSlice';
 import Button from '../../components/Button';
 import usePersist from '../../hooks/usePersist';
+import jwt_decode from 'jwt-decode';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -30,7 +31,14 @@ const Login = () => {
       dispatch(setCredentials({ accessToken }));
       setUsername('');
       setPassword('');
-      navigate('/');
+
+      const decoded = jwt_decode(accessToken);
+      const { isAdmin } = decoded.UserInfo;
+      if (isAdmin) {
+        navigate('/');
+      } else {
+        navigate('/home');
+      }
     } catch (err) {
       if (err.status === 401) {
         alert('Invalid username or password');

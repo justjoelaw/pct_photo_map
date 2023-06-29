@@ -8,7 +8,15 @@ import { default as asyncHandler } from 'express-async-handler';
 // @access Private
 const getAllJournalEntrys = asyncHandler(async (req, res) => {
   // Get all notes from MongoDB
-  const journalEntrys = await JournalEntry.find().lean();
+  let journalEntrys = await JournalEntry.find().lean();
+  console.log(req.userId);
+
+  if (!req.isAdmin) {
+    // non-admin cannot request other entrys
+    journalEntrys = journalEntrys.filter((entry) => {
+      return entry.user.equals(req.userId);
+    });
+  }
 
   // If no users
   if (!journalEntrys?.length) {
@@ -24,6 +32,12 @@ const getAllJournalEntrys = asyncHandler(async (req, res) => {
 const getJournalEntryByID = asyncHandler(async (req, res) => {
   try {
     const journalEntry = await JournalEntry.findById(req.params.id);
+
+    if (!req.isAdmin) {
+      if (!journalEntry.user.equals(req.userId)) {
+        res.status(403).send('You do not have permission to access this resource');
+      }
+    }
 
     if (!journalEntry) {
       res.status(404).send('JournalEntry not found');
@@ -68,7 +82,7 @@ const createNewJournalEntry = asyncHandler(async (req, res) => {
     return res.status(409).json({ message: 'Duplicate journalEntry title' });
   }
 
-  // Create and store the new user
+  // Create and store the new trail
   const journalEntry = await JournalEntry.create({ title, date, journalText, latitude, longitude, user, trail, isPublic });
 
   if (journalEntry) {
@@ -95,6 +109,12 @@ const updateJournalEntry = asyncHandler(async (req, res) => {
 
   if (!journalEntry) {
     return res.status(400).json({ message: 'JournalEntry not found' });
+  }
+
+  if (!req.isAdmin) {
+    if (!journalEntry.user.equals(req.userId)) {
+      res.status(403).send('You do not have permission to access this resource');
+    }
   }
 
   const user = journalEntry.user;
@@ -136,6 +156,12 @@ const deleteJournalEntry = asyncHandler(async (req, res) => {
 
   if (!journalEntry) {
     return res.status(400).json({ message: 'JournalEntry not found' });
+  }
+
+  if (!req.isAdmin) {
+    if (!journalEntry.user.equals(req.userId)) {
+      res.status(403).send('You do not have permission to access this resource');
+    }
   }
 
   const result = await journalEntry.deleteOne();

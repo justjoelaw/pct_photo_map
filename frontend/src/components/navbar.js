@@ -11,6 +11,8 @@ import { selectCurrentToken } from '../features/auth/authSlice.js';
 
 import { useSelector } from 'react-redux';
 
+import FlexContainerRow from './FlexContainerRow';
+
 // Here, we display our Navbar
 const Navbar = () => {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
@@ -56,13 +58,22 @@ const Navbar = () => {
     </Button>
   );
 
+  const registerButton = (
+    <Button primary rounded>
+      <Link to='/register'>Register</Link>
+    </Button>
+  );
+
   return (
     <nav className='bg-gray-300 h-30'>
       <div>
-        <FontAwesomeIcon icon={faHouse} size='lg' style={{ color: '#ee9c3f' }} onClick={onGoHomeClicked} />
-        {userLoggedIn ? logoutButton : loginButton}
-        {userLoggedIn ? <div>Logged in as: {username}</div> : <div></div>}
-        {isAdmin ? <div> Admin Mode</div> : <div></div>}
+        <FlexContainerRow>
+          <FontAwesomeIcon icon={faHouse} size='lg' style={{ color: '#ee9c3f' }} onClick={onGoHomeClicked} />
+          {userLoggedIn ? logoutButton : loginButton}
+          {!userLoggedIn && registerButton}
+          {userLoggedIn ? <div>Logged in as: {username}</div> : <div></div>}
+          {isAdmin ? <div> Admin Mode</div> : <div></div>}
+        </FlexContainerRow>
       </div>
     </nav>
   );

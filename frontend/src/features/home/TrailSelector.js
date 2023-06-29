@@ -1,13 +1,16 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { selectAllTrails } from '../trails/trailsApiSlice';
-import { useSelector } from 'react-redux';
-import L from 'leaflet';
+import { selectActiveTrailId, setActiveTrailId } from './homeSlice';
+import { useDispatch } from 'react-redux';
 
 const TrailSelector = ({ trails, trailId, setTrailId }) => {
+  console.log('trailId', trailId);
+  const dispatch = useDispatch();
+  dispatch(setActiveTrailId({ trailId }));
+
   const handleTrailIdChange = (e) => {
     e.preventDefault();
     setTrailId(e.target.value);
+    dispatch(setActiveTrailId({ trailId: e.target.value }));
   };
 
   const trailOptions = trails.map((trail) => {
