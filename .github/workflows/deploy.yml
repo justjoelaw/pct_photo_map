@@ -23,6 +23,7 @@ jobs:
         uses: docker/build-push-action@v2
         env:
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
+          NODE_ENV: production
         with:
           context: .
           build-args: |
