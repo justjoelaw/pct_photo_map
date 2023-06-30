@@ -19,6 +19,8 @@ COPY --from=backend-build /usr/src/backend .
 RUN ls
 ARG ATLAS_URI
 ENV ATLAS_URI ${ATLAS_URI}
+ARG NODE_ENV
+ENV NODE_ENV ${NODE_ENV}
 
 EXPOSE 80
 
