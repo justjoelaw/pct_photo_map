@@ -20,6 +20,8 @@ const setupServer = async () => {
 
   loadEnvironment();
   console.log('NODE_ENV = ', process.env.NODE_ENV);
+  console.log('ACCESS_TOKEN_SECRET = ', process.env.ACCESS_TOKEN_SECRET);
+  console.log('REFRESH_TOKEN_SECRET = ', process.env.REFRESH_TOKEN_SECRET);
   const PORT = process.env.PORT || 5050;
   console.log('About to attempt connectDB using ', process.env.ATLAS_URI);
   let conn = await connectDB();
