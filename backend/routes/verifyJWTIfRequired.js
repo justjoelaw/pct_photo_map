@@ -11,7 +11,6 @@ const verifyJWTIfRequired = (req, res, next) => {
   const isExempt = JWTExemptReqs.find((exemptReq) => exemptReq.path === req.baseUrl && exemptReq.method === req.method);
 
   if (isExempt) {
-    console.log('isExmpt ran');
     next();
   } else {
     const authHeader = req.headers.authorization || req.headers.Authorization;

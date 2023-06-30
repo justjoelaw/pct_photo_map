@@ -2,6 +2,8 @@ import { User } from '../models/User.model.js';
 import { JournalEntry } from '../models/JournalEntry.model.js';
 import { default as asyncHandler } from 'express-async-handler';
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
+import { sendVerificationEmail } from '../utils/sendVerificationEmail.js';
 
 // @desc Get all users
 // @route GET /users
@@ -22,30 +24,43 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @route POST /users
 // @access Private
 const createNewUser = asyncHandler(async (req, res) => {
-  const { username, password, isAdmin } = req.body;
+  const { username, password, email } = req.body;
+  let { isAdmin } = req.body;
+
+  if (!req.isAdmin) {
+    isAdmin = false;
+  }
 
   // Confirm data
-  if (!username || !password) {
+  if (!username || !password || !email) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
   // Check for duplicate username
-  const duplicate = await User.findOne({ username }).lean().exec();
+  const duplicateUsername = await User.findOne({ username }).lean().exec();
 
-  if (duplicate) {
+  if (duplicateUsername) {
     return res.status(409).json({ message: 'Duplicate username' });
+  }
+
+  // Check for duplicate email
+  const duplicateEmail = await User.findOne({ email }).lean().exec();
+
+  if (duplicateEmail) {
+    return res.status(409).json({ message: 'Duplicate email' });
   }
 
   // Hash password
   const hashedPwd = await bcrypt.hash(password, 10); // salt rounds
 
-  const userObject = { username, password: hashedPwd, isAdmin };
+  const userObject = { username, password: hashedPwd, isAdmin, email, emailToken: crypto.randomBytes(64).toString('hex') };
 
   // Create and store new user
   const user = await User.create(userObject);
 
   if (user) {
     //created
+    sendVerificationEmail(user);
     res.status(201).json({ message: `New user ${username} created` });
   } else {
     res.status(400).json({ message: 'Invalid user data received' });

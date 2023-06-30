@@ -25,7 +25,8 @@ import Login from './features/auth/Login';
 import PersistLogin from './features/auth/persistLogin';
 import HomePage from './features/home/HomePage';
 import AdminRequired from './features/auth/AdminRequired';
-import Register from './features/auth/Register';
+import VerifyEmail from './features/auth/VerifyEmail';
+import PostRegister from './features/auth/PostRegister';
 
 const App = () => {
   return (
@@ -33,7 +34,10 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path='login' element={<Login />} />
-        <Route path='register' element={<Register />} />
+        <Route path='register' element={<NewUserForm />} />
+        <Route path='/postRegistration' element={<PostRegister />} />
+        <Route path='verify' element={<VerifyEmail />} />
+
         <Route element={<PersistLogin />}>
           <Route element={<Prefetch />}>
             <Route exact path='/' element={<Landing />} />
