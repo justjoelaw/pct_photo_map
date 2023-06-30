@@ -24,11 +24,17 @@ jobs:
         env:
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
           NODE_ENV: production
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
         with:
           context: .
           build-args: |
             "ATLAS_URI=${{ secrets.ATLAS_URI }}"
             "NODE_ENV=production"
+            "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}"
+            "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}"
+            "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}"
           push: true
           tags: ${{ secrets.ACR_REGISTRY }}/${{ secrets.CONTAINER_NAME }}:${{ github.sha }}
          
@@ -38,6 +44,9 @@ jobs:
         env:
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
           NODE_ENV: production
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
         with:
           app-name: ${{ secrets.APP_NAME }}
           publish-profile: ${{ secrets.AZURE_APP_SERVICE_PUBLISH_PROFILE }}
