@@ -30,8 +30,8 @@ jobs:
         with:
           context: .
           build-args: |
-            ATLAS_URI=${{ secrets.ATLAS_URI }}
             NODE_ENV=production
+            ATLAS_URI=${{ secrets.ATLAS_URI }}
             EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
             ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}
             REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}
