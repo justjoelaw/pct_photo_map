@@ -28,6 +28,7 @@ jobs:
           context: .
           build-args: |
             "ATLAS_URI=${{ secrets.ATLAS_URI }}"
+            "NODE_ENV=production"
           push: true
           tags: ${{ secrets.ACR_REGISTRY }}/${{ secrets.CONTAINER_NAME }}:${{ github.sha }}
          
