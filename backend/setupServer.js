@@ -21,7 +21,7 @@ const setupServer = async () => {
   loadEnvironment();
   console.log('NODE_ENV = ', process.env.NODE_ENV);
   const PORT = process.env.PORT || 5050;
-  console.log('About to attempt connectDB using ', process.env.COSMOS_URI);
+  console.log('About to attempt connectDB using ', process.env.ATLAS_URI);
   let conn = await connectDB();
   const app = express();
 

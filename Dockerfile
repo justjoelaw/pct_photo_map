@@ -17,8 +17,8 @@ WORKDIR /root/
 COPY --from=frontend-build /usr/src/frontend/build ./frontend/build
 COPY --from=backend-build /usr/src/backend .
 RUN ls
-ARG COSMOS_URI
-ENV COSMOS_URI ${COSMOS_URI}
+ARG ATLAS_URI
+ENV ATLAS_URI ${ATLAS_URI}
 
 EXPOSE 80
 
