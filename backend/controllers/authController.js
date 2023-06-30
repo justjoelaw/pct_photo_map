@@ -10,6 +10,7 @@ const generateAccessToken = (foundUser) => {
         username: foundUser.username,
         isAdmin: foundUser.isAdmin,
         userId: foundUser.id,
+        isVerified: foundUser.isVerified,
       },
     },
     process.env.ACCESS_TOKEN_SECRET,
@@ -25,8 +26,13 @@ const login = asyncHandler(async (req, res) => {
   }
 
   const foundUser = await User.findOne({ username }).exec();
+
+  if (!foundUser.isVerified) {
+    return res.status(401).json({ message: 'Unauthorized - please verify your email' });
+  }
+
   if (!foundUser) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'Unauthorized - check your username and password' });
   }
 
   const match = await bcrypt.compare(password, foundUser.password);
@@ -94,4 +100,27 @@ const logout = asyncHandler(async (req, res) => {
   res.json({ message: 'Cookie cleared' });
 });
 
-export { login, refresh, logout };
+const verifyEmail = asyncHandler(async (req, res) => {
+  const emailToken = req.body.emailToken;
+
+  if (!emailToken) {
+    return res.status(404).send('emailToken not provided');
+  }
+
+  const user = await User.findOne({ emailToken });
+
+  if (!user) {
+    return res.status(404).send('emailToken not found');
+  }
+
+  if (user) {
+    user.emailToken = null;
+    user.isVerified = true;
+
+    await user.save();
+
+    res.status(200).send('Email verified');
+  }
+});
+
+export { login, refresh, logout, verifyEmail };

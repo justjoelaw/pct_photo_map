@@ -40,8 +40,9 @@ const Login = () => {
         navigate('/home');
       }
     } catch (err) {
+      console.log(err);
       if (err.status === 401) {
-        alert('Invalid username or password');
+        alert(err.data.message);
       }
       console.log(err);
     }
