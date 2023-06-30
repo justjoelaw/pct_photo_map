@@ -1,16 +1,18 @@
 import { createMailTransporter } from './createMailTransporter.js';
 
 const sendVerificationEmail = (user) => {
+  let baseUrl;
   console.log('running sendVerificationEmail');
   const transporter = createMailTransporter();
-  // console.log(transporter);
+
+  process.env.NODE_ENV === 'production' ? (baseUrl = 'https://trail-journal.azurewebsites.net/') : (baseUrl = 'http://localhost:3000');
 
   const mailOptions = {
     from: '"Trail Map - Test" <justjoedev@hotmail.com>',
     to: user.email,
     subject: 'Trail Map - Verify your email',
     html: `<p>Hello ${user.username}! Please verify your email by clicking this link:</p>
-        <a href='http://localhost:3000/verify?emailToken=${user.emailToken}'>Verify Email</a>`,
+        <a href='${baseUrl}/verify?emailToken=${user.emailToken}'>Verify Email</a>`,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

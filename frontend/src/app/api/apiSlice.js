@@ -1,8 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { setCredentials } from '../../features/auth/authSlice';
 
+let baseUrl;
+
+process.env.NODE_ENV === 'production' ? (baseUrl = 'https://trail-journal.azurewebsites.net/') : (baseUrl = 'http://localhost:5050');
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:5050',
+  baseUrl,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
