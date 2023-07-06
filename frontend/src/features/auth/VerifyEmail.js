@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { useVerifyEmailMutation } from './authApiSlice';
+import Header from '../../components/Header';
+import FlexContainer from '../../components/FlexContainer';
 
 const VerifyEmail = () => {
-  const [content, setContent] = useState(<div>Attempting to verify email...</div>);
+  const [message, setMessage] = useState(<div>Attempting to verify email...</div>);
 
   const [searchParams] = useSearchParams();
   const { isVerified } = useAuth();
@@ -12,7 +14,7 @@ const VerifyEmail = () => {
   const emailToken = searchParams.get('emailToken');
   console.log('isVerified is ', isVerified);
 
-  const [verifyEmail, { isLoading, isSuccess, isError, error }] = useVerifyEmailMutation();
+  const [verifyEmail] = useVerifyEmailMutation();
 
   useEffect(() => {
     if (isVerified) {
@@ -30,12 +32,27 @@ const VerifyEmail = () => {
       const result = verifyEmailAsync();
       console.log(result);
       if (result.error) {
-        setContent(<div>Email verification failed</div>);
+        setMessage(<div>Email verification failed</div>);
       } else {
-        setContent(<div>Thank you - your email is now verified</div>);
+        setMessage(<div>Thank you - your email is now verified</div>);
       }
     }
-  }, [emailToken]);
+  }, [emailToken, isVerified, verifyEmail]);
+
+  let content;
+
+  content = (
+    <FlexContainer className='grow'>
+      <Header splash className='basis-1/4 text-center'>
+        Trail Journal
+      </Header>
+      <div className='basis-3/4'>
+        <FlexContainer primary className='items-center'>
+          {message}
+        </FlexContainer>
+      </div>
+    </FlexContainer>
+  );
 
   return content;
 };

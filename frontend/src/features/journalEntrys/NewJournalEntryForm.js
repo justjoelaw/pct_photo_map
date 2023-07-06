@@ -6,6 +6,10 @@ import { verifyLocation } from './utils/journalEntryUtils';
 import useAuth from '../../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import { selectActiveTrailId } from '../home/homeSlice';
+import FlexContainer from '../../components/FlexContainer';
+import FlexContainerRow from '../../components/FlexContainerRow';
+import Input from '../../components/Input';
+import Label from '../../components/Label';
 
 const NewJournalEntryForm = ({ users, trails }) => {
   const [addNewJournalEntry, { isLoading, isSuccess, isError, error }] = useAddNewJournalEntryMutation();
@@ -37,7 +41,7 @@ const NewJournalEntryForm = ({ users, trails }) => {
         navigate('/home');
       }
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess, navigate, isAdmin, users]);
 
   useEffect(() => {
     verifyLocation(latitude, longitude, setValidLocation);
@@ -93,8 +97,6 @@ const NewJournalEntryForm = ({ users, trails }) => {
       noteBody.user = activeUserId;
     }
 
-    console.log(canSave, validLocation, latitude, longitude);
-
     if (canSave) {
       await addNewJournalEntry(noteBody);
     } else if (!validLocation) {
@@ -127,38 +129,72 @@ const NewJournalEntryForm = ({ users, trails }) => {
   });
 
   const content = (
-    <div>
+    <FlexContainer className='grow'>
       <p className={errClass}>{error?.data?.message}</p>
-      <form onSubmit={handleFormSubmit}>
-        <label htmlFor='title'>Title:</label>
-        <input id='title' name='title' autoComplete='off' type='text' value={title} onChange={handleTitleChange} />
-        <label htmlFor='date'>Date:</label>
-        <input id='date' name='date' type='date' value={date} onChange={handleDateChange} />
-        <label htmlFor='text'>Text:</label>
-        <textarea id='journalText' name='journalText' type='text' value={journalText} onChange={handleJournalTextChange} />
-        {isAdmin && (
-          <>
-            <label htmlFor='user'>User:</label>
-            <select id='username' name='username' value={userId} onChange={handleUserIdChange}>
-              {userOptions}
-            </select>
-          </>
-        )}
-        <label htmlFor='trail'>Trail:</label>
-        <select id='trail' name='trail' value={trailId} onChange={handleTrailIdChange}>
-          {trailOptions}
-        </select>
-        <label htmlFor='latitude'>Latitude:</label>
-        <input id='latitude' type='number' value={latitude} onChange={handleLatitudeChange} />
-        <label htmlFor='longitude'>Longitude:</label>
-        <input id='longitude' type='number' value={longitude} onChange={handleLongitudeChange} />
-        <label htmlFor='isPublic'>Public:</label>
-        <input id='isPublic' name='isPublic' type='checkbox' value={isPublic} onChange={handleIsPublicChange} />
-        <Button primary rounded onClick={handleFormSubmit}>
-          Save Entry
-        </Button>
-      </form>
-    </div>
+
+      <FlexContainer primary className='items-left my-5 grow'>
+        <form onSubmit={handleFormSubmit} className='h-full'>
+          <FlexContainer className='h-full space-y-5'>
+            <FlexContainerRow>
+              <Label htmlFor='title'>Title:</Label>
+              <Input id='title' name='title' autoComplete='off' type='text' className='textInput' value={title} onChange={handleTitleChange} />
+            </FlexContainerRow>
+            <FlexContainerRow>
+              <Label htmlFor='date'>Date:</Label>
+              <Input id='date' name='date' type='date' value={date} onChange={handleDateChange} />
+            </FlexContainerRow>
+
+            {isAdmin && (
+              <FlexContainerRow>
+                <Label htmlFor='user'>User:</Label>
+                <select id='username' name='username' className='rounded-lg border-2 border-slate-600' value={userId} onChange={handleUserIdChange}>
+                  {userOptions}
+                </select>
+              </FlexContainerRow>
+            )}
+            <FlexContainerRow>
+              <Label htmlFor='trail'>Trail:</Label>
+              <select id='trail' name='trail' className='rounded-lg border-2 border-slate-600' value={trailId} onChange={handleTrailIdChange}>
+                {trailOptions}
+              </select>
+            </FlexContainerRow>
+            <FlexContainerRow>
+              <Label htmlFor='latitude'>Latitude:</Label>
+              <Input id='latitude' type='number' className='textInput' value={latitude} onChange={handleLatitudeChange} />
+            </FlexContainerRow>
+            <FlexContainerRow>
+              <Label htmlFor='longitude'>Longitude:</Label>
+              <Input id='longitude' type='number' className='textInput' value={longitude} onChange={handleLongitudeChange} />
+            </FlexContainerRow>
+            <FlexContainerRow>
+              <Label htmlFor='isPublic'>Public:</Label>
+              <input id='isPublic' name='isPublic' type='checkbox' value={isPublic} onChange={handleIsPublicChange} />
+            </FlexContainerRow>
+            <FlexContainer className='h-full grow'>
+              <FlexContainerRow>
+                <Label htmlFor='text'>Text:</Label>
+                <FlexContainer className='grow'>
+                  <textarea
+                    id='journalText'
+                    name='journalText'
+                    type='text'
+                    rows='10'
+                    className='p-2.5 rounded-lg border-2 border-slate-600'
+                    value={journalText}
+                    onChange={handleJournalTextChange}
+                  />
+                </FlexContainer>
+              </FlexContainerRow>
+            </FlexContainer>
+            <FlexContainerRow>
+              <Button primary rounded onClick={handleFormSubmit}>
+                Save Entry
+              </Button>
+            </FlexContainerRow>
+          </FlexContainer>
+        </form>
+      </FlexContainer>
+    </FlexContainer>
   );
 
   return content;

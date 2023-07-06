@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faSquareCheck, faSquare } from '@fortawesome/free-solid-svg-icons';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
+import TableRow from '../../components/TableRow';
+import TableData from '../../components/TableData';
 
 const JournalEntry = ({ journalEntryId }) => {
   const journalEntry = useSelector((state) => selectJournalEntryById(state, journalEntryId));
@@ -15,20 +17,20 @@ const JournalEntry = ({ journalEntryId }) => {
   };
 
   const content = (
-    <tr>
-      <td>{journalEntry.title}</td>
-      <td>{journalEntry.date}</td>
-      <td>{journalEntry.user}</td>
-      <td>{journalEntry.latitude}</td>
-      <td>{journalEntry.longitude}</td>
-      <td>{journalEntry.trail}</td>
-      <td>{journalEntry.isPublic ? <FontAwesomeIcon icon={faSquareCheck} /> : <FontAwesomeIcon icon={faSquare} />}</td>
-      <td>
+    <TableRow>
+      <TableData>{journalEntry.title}</TableData>
+      <TableData>{journalEntry.date}</TableData>
+      <TableData>{journalEntry.user}</TableData>
+      <TableData>{journalEntry.latitude}</TableData>
+      <TableData>{journalEntry.longitude}</TableData>
+      <TableData>{journalEntry.trail}</TableData>
+      <TableData>{journalEntry.isPublic ? <FontAwesomeIcon icon={faSquareCheck} /> : <FontAwesomeIcon icon={faSquare} />}</TableData>
+      <TableData>
         <Button primary onClick={handleEdit}>
           <FontAwesomeIcon icon={faPenToSquare} />
         </Button>
-      </td>
-    </tr>
+      </TableData>
+    </TableRow>
   );
   return content;
 };

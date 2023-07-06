@@ -1,26 +1,20 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { selectAllTrails } from '../trails/trailsApiSlice';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import TrailSelector from './TrailSelector';
 import TrailMap from './TrailMap';
 import DisplayJournalEntry from './DisplayJournalEntry';
 import FlexContainer from '../../components/FlexContainer';
 import FlexContainerRow from '../../components/FlexContainerRow';
 import useAuth from '../../hooks/useAuth';
-import { selectAllJournalEntrys, useGetJournalEntrysQuery } from '../journalEntrys/journalEntrysApiSlice';
+import { selectAllJournalEntrys } from '../journalEntrys/journalEntrysApiSlice';
 import { selectDisplayedJournalEntry } from './homeSlice';
-import { connect } from 'react-redux';
 import AddEntryButton from './buttons/AddEntryButton';
-import { selectActiveTrailId } from './homeSlice';
-
-const mapStateToProps = (state) => {
-  return {
-    displayedJournalEntry: state.home.displayedJournalEntry,
-  };
-};
+import { selectActiveTrailId, setActiveTrailId } from './homeSlice';
 
 const HomePage = () => {
+  const dispatch = useDispatch();
   const trails = useSelector(selectAllTrails);
   const journalEntrys = useSelector(selectAllJournalEntrys);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,16 +22,19 @@ const HomePage = () => {
   const activeTrailId = useSelector(selectActiveTrailId);
   const [trailId, setTrailId] = useState(activeTrailId ?? null);
   const { userId } = useAuth();
+
   const displayedJournalEntry = useSelector(selectDisplayedJournalEntry);
+  console.log('displayedJOurnalENtry is', displayedJournalEntry);
 
   useEffect(() => {
     // Account for delay in prefetch
     if (trails && journalEntrys) {
       setIsLoading(false);
       console.log(activeTrailId ?? trails[0]?.id);
+      dispatch(setActiveTrailId({ trailId }));
       setTrailId(activeTrailId ?? trails[0]?.id);
     }
-  }, [trails, journalEntrys]);
+  }, [trails, journalEntrys, activeTrailId, dispatch, trailId]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -48,20 +45,24 @@ const HomePage = () => {
   });
 
   const loadedContent = (
-    <FlexContainer>
-      <FlexContainerRow>
-        <div className='basis-1/2 bg-red-200'>
+    <FlexContainer primary className='my-5 grow min-h-0'>
+      <FlexContainerRow id='row1'>
+        <div id='q1' className='basis-1/2'>
           <TrailSelector trails={trails} trailId={trailId} setTrailId={setTrailId} />
         </div>
-        <div className='basis-1/2 bg-blue-400'>
-          <AddEntryButton />
+        <div id='q2' className='basis-1/2'>
+          <FlexContainerRow className='justify-end'>
+            <AddEntryButton />
+          </FlexContainerRow>
         </div>
       </FlexContainerRow>
-      <FlexContainerRow>
-        <div className='basis-1/2 bg-red-200'>
+      <FlexContainerRow id='row2' className='grow min-h-0'>
+        <div id='q3' className='basis-1/2 border-2'>
           <TrailMap trailId={trailId} filteredJournalEntrys={filteredJournalEntrys} />
         </div>
-        <div className='basis-1/2 bg-blue-200'>{displayedJournalEntry && <DisplayJournalEntry entryId={displayedJournalEntry} />}</div>
+        <div id='q4' className='basis-1/2 h-full'>
+          {displayedJournalEntry && <DisplayJournalEntry entryId={displayedJournalEntry} />}
+        </div>
       </FlexContainerRow>
     </FlexContainer>
   );
@@ -71,4 +72,4 @@ const HomePage = () => {
   return content;
 };
 
-export default connect(mapStateToProps)(HomePage);
+export default HomePage;

@@ -1,5 +1,7 @@
 import { useGetTrailsQuery } from './trailsApiSlice.js';
 import Trail from './Trail.js';
+import Table from '../../components/Table';
+import FlexContainer from '../../components/FlexContainer.js';
 
 const TrailsList = () => {
   const {
@@ -30,15 +32,9 @@ const TrailsList = () => {
     });
 
     content = (
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>{tableRows}</tbody>
-      </table>
+      <FlexContainer primary>
+        <Table colNames={['Name', '']} tableRows={tableRows}></Table>
+      </FlexContainer>
     );
   }
 

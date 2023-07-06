@@ -6,12 +6,16 @@ import { setCredentials } from './authSlice';
 import Button from '../../components/Button';
 import usePersist from '../../hooks/usePersist';
 import jwt_decode from 'jwt-decode';
+import FlexContainer from '../../components/FlexContainer';
+import Header from '../../components/Header';
+import Input from '../../components/Input';
+import FlexContainerRow from '../../components/FlexContainerRow';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   const [persist, setPersist] = usePersist();
 
@@ -53,17 +57,51 @@ const Login = () => {
   };
 
   const content = (
-    <form onSubmit={handleFormSubmit}>
-      <label htmlFor='username'>Username:</label>
-      <input id='username' name='username' autoComplete='off' type='text' value={username} onChange={handleUsernameChange} />
-      <label htmlFor='password'>Password:</label>
-      <input id='password' name='password' autoComplete='off' type='password' value={password} onChange={handlePasswordChange} />
-      <Button primary rounded onClick={handleFormSubmit}>
-        Login
-      </Button>
-      <label htmlFor='persist'>Trust this device?</label>
-      <input id='persist' type='checkbox' checked={persist} onChange={handlePersistChange} />
-    </form>
+    <FlexContainer className='grow'>
+      <Header splash className='basis-1/4 text-center'>
+        Trail Journal
+      </Header>
+      <div className='basis-3/4'>
+        <FlexContainer primary className='items-center'>
+          <div>
+            <form onSubmit={handleFormSubmit}>
+              <FlexContainer className='space-y-5'>
+                <FlexContainerRow>
+                  <label htmlFor='username' className='w-40'>
+                    Username:
+                  </label>
+                  <Input id='username' name='username' autoComplete='off' type='text' value={username} onChange={handleUsernameChange} textInput />
+                </FlexContainerRow>
+                <FlexContainerRow>
+                  <label htmlFor='password' className='w-40'>
+                    Password:
+                  </label>
+                  <Input
+                    id='password'
+                    name='password'
+                    autoComplete='off'
+                    type='password'
+                    value={password}
+                    onChange={handlePasswordChange}
+                    textInput
+                  />
+                </FlexContainerRow>
+
+                <FlexContainer className='items-center'>
+                  <Button primary rounded onClick={handleFormSubmit}>
+                    Login
+                  </Button>
+                  <FlexContainerRow>
+                    <label htmlFor='persist'>Trust this device?</label>
+                    <input id='persist' type='checkbox' checked={persist} onChange={handlePersistChange} />
+                  </FlexContainerRow>
+                </FlexContainer>
+              </FlexContainer>
+            </form>
+          </div>
+        </FlexContainer>
+      </div>
+    </FlexContainer>
   );
 
   return content;

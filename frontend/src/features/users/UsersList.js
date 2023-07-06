@@ -1,6 +1,7 @@
-import { connect } from 'react-redux';
 import { useGetUsersQuery } from './usersApiSlice';
 import User from './User';
+import FlexContainer from '../../components/FlexContainer';
+import Table from '../../components/Table';
 
 const UsersList = () => {
   const {
@@ -33,17 +34,9 @@ const UsersList = () => {
     });
 
     content = (
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>isAdmin</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>{tableRows}</tbody>
-      </table>
+      <FlexContainer primary>
+        <Table colNames={['ID', 'Username', 'isAdmin', '']} tableRows={tableRows}></Table>
+      </FlexContainer>
     );
   }
 
