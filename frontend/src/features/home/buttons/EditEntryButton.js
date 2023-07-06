@@ -10,7 +10,7 @@ const EditEntryButton = ({ entryId }) => {
   };
 
   return (
-    <Button rounded secondary onClick={handleClick}>
+    <Button rounded primary onClick={handleClick}>
       Edit Entry
     </Button>
   );

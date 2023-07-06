@@ -1,5 +1,6 @@
 import request from 'supertest';
 import { setupServer } from '../setupServer.js';
+import { User } from '../models/User.model.js';
 let server;
 let conn;
 let app;
@@ -18,12 +19,18 @@ beforeAll(async () => {
   const userPayload = {
     username: 'footest',
     password: 'bartest',
+    email: 'foo@bar.com',
   };
   const responseUserCreate = await request(app)
     .post('/users')
     .send(userPayload)
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json');
+
+  let testUser = await User.findOne({ username: 'footest' }).exec();
+  testUser.isAdmin = true;
+  testUser.isVerified = true;
+  testUser = await testUser.save();
 
   const loginPayload = {
     username: 'footest',
@@ -73,6 +80,7 @@ test('Users API - PATCH user', async () => {
   const payload = {
     id: testUserId,
     username: 'footestUpdated',
+    email: 'foo@bar.com',
     isAdmin: true,
   };
 

@@ -4,10 +4,14 @@ import { useUpdateJournalEntryMutation, useDeleteJournalEntryMutation } from './
 import { useNavigate } from 'react-router-dom';
 import { verifyLocation } from './utils/journalEntryUtils';
 import useAuth from '../../hooks/useAuth';
+import FlexContainer from '../../components/FlexContainer';
+import FlexContainerRow from '../../components/FlexContainerRow';
+import Input from '../../components/Input';
+import Label from '../../components/Label';
 
 const EditJournalEntryForm = ({ users, trails, journalEntry }) => {
   const [updateJournalEntry, { isLoading, isSuccess, isError, error }] = useUpdateJournalEntryMutation();
-  const [deleteJournalEntry, { isSuccess: isDelSuccess, isError: isDelError, error: delError }] = useDeleteJournalEntryMutation();
+  const [deleteJournalEntry, { isSuccess: isDelSuccess }] = useDeleteJournalEntryMutation();
 
   const navigate = useNavigate();
 
@@ -35,7 +39,7 @@ const EditJournalEntryForm = ({ users, trails, journalEntry }) => {
         navigate('/home');
       }
     }
-  }, [isSuccess, isDelSuccess, navigate]);
+  }, [isSuccess, isDelSuccess, navigate, isAdmin, users]);
 
   useEffect(() => {
     verifyLocation(latitude, longitude, setValidLocation);
@@ -131,42 +135,72 @@ const EditJournalEntryForm = ({ users, trails, journalEntry }) => {
   });
 
   const content = (
-    <div>
+    <FlexContainer className='grow'>
       <p className={errClass}>{error?.data?.message}</p>
-      <form onSubmit={handleFormSubmit}>
-        <label htmlFor='title'>Title:</label>
-        <input id='title' name='title' autoComplete='off' type='text' value={title} onChange={handleTitleChange} />
-        <label htmlFor='date'>Date:</label>
-        <input id='date' name='date' type='date' value={date} onChange={handleDateChange} />
-        <label htmlFor='text'>Text:</label>
-        <textarea id='journalText' name='journalText' type='text' value={journalText} onChange={handleJournalTextChange} />
-        {isAdmin && (
-          <>
-            <label htmlFor='user'>User:</label>
-            <select id='username' name='username' value={userId} onChange={handleUserIdChange}>
-              {userOptions}
-            </select>
-          </>
-        )}
+      <FlexContainer primary className='items-left my-5 grow'>
+        <form onSubmit={handleFormSubmit}>
+          <FlexContainer className='h-full space-y-5'>
+            <FlexContainerRow>
+              <Label htmlFor='title'>Title:</Label>
+              <Input id='title' name='title' autoComplete='off' type='text' className='textInput' value={title} onChange={handleTitleChange} />
+            </FlexContainerRow>
+            <FlexContainerRow>
+              <Label htmlFor='date'>Date:</Label>
+              <Input id='date' name='date' type='date' className='textInput' value={date} onChange={handleDateChange} />
+            </FlexContainerRow>
 
-        <label htmlFor='trail'>Trail:</label>
-        <select id='trail' name='trail' value={trailId} onChange={handleTrailIdChange}>
-          {trailOptions}
-        </select>
-        <label htmlFor='latitude'>Latitude:</label>
-        <input id='latitude' type='number' value={latitude} onChange={handleLatitudeChange} />
-        <label htmlFor='longitude'>Longitude:</label>
-        <input id='longitude' type='number' value={longitude} onChange={handleLongitudeChange} />
-        <label htmlFor='isPublic'>Public:</label>
-        <input id='isPublic' name='isPublic' type='checkbox' checked={isPublic} value={isPublic} onChange={handleIsPublicChange} />
-        <Button primary rounded onClick={handleFormSubmit}>
-          Save Entry
-        </Button>
-        <Button warning rounded onClick={handleDeleteClick}>
-          Delete Entry
-        </Button>
-      </form>
-    </div>
+            {isAdmin && (
+              <FlexContainerRow>
+                <Label htmlFor='user'>User:</Label>
+                <select id='username' name='username' value={userId} onChange={handleUserIdChange}>
+                  {userOptions}
+                </select>
+              </FlexContainerRow>
+            )}
+            <FlexContainerRow>
+              <Label htmlFor='trail'>Trail:</Label>
+              <select id='trail' name='trail' className='rounded-lg border-2 border-slate-600' value={trailId} onChange={handleTrailIdChange}>
+                {trailOptions}
+              </select>
+            </FlexContainerRow>
+            <FlexContainerRow>
+              <Label htmlFor='latitude'>Latitude:</Label>
+              <Input id='latitude' type='number' className='textInput' value={latitude} onChange={handleLatitudeChange} />
+            </FlexContainerRow>
+            <FlexContainerRow>
+              <Label htmlFor='longitude'>Longitude:</Label>
+              <Input id='longitude' type='number' className='textInput' value={longitude} onChange={handleLongitudeChange} />
+            </FlexContainerRow>
+            <FlexContainerRow>
+              <Label htmlFor='isPublic'>Public:</Label>
+              <Input id='isPublic' name='isPublic' type='checkbox' checked={isPublic} value={isPublic} onChange={handleIsPublicChange} />
+            </FlexContainerRow>
+            <FlexContainerRow>
+              <Label htmlFor='text'>Text:</Label>
+              <FlexContainer className='grow'>
+                <textarea
+                  id='journalText'
+                  name='journalText'
+                  type='text'
+                  rows='10'
+                  className='p-2.5 rounded-lg border-2 border-slate-600'
+                  value={journalText}
+                  onChange={handleJournalTextChange}
+                />
+              </FlexContainer>
+            </FlexContainerRow>
+            <FlexContainerRow>
+              <Button primary rounded onClick={handleFormSubmit}>
+                Save Entry
+              </Button>
+              <Button warning rounded onClick={handleDeleteClick}>
+                Delete Entry
+              </Button>
+            </FlexContainerRow>
+          </FlexContainer>
+        </form>
+      </FlexContainer>
+    </FlexContainer>
   );
   return content;
 };

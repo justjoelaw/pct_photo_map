@@ -27,52 +27,56 @@ import HomePage from './features/home/HomePage';
 import AdminRequired from './features/auth/AdminRequired';
 import VerifyEmail from './features/auth/VerifyEmail';
 import PostRegister from './features/auth/PostRegister';
+import FlexContainer from './components/FlexContainer';
 
 const App = () => {
   return (
-    <div className='columns-1'>
-      <Navbar />
-      <Routes>
-        <Route path='login' element={<Login />} />
-        <Route path='register' element={<NewUserForm />} />
-        <Route path='/postRegistration' element={<PostRegister />} />
-        <Route path='verify' element={<VerifyEmail />} />
-
-        <Route element={<PersistLogin />}>
-          <Route element={<Prefetch />}>
+    <>
+      <div className='h-[100vh] text-center bg-cover bg-top' style={{ backgroundImage: "url('images/cathy.jpg')" }}>
+        <FlexContainer className='h-full'>
+          <Navbar className='basis-1' />
+          <Routes>
+            <Route path='login' element={<Login />} />
+            <Route path='register' element={<NewUserForm />} />
+            <Route path='/postRegistration' element={<PostRegister />} />
+            <Route path='verify' element={<VerifyEmail />} />
             <Route exact path='/' element={<Landing />} />
 
-            <Route path='home'>
-              <Route index element={<HomePage />} />
-            </Route>
+            <Route element={<PersistLogin />}>
+              <Route element={<Prefetch />}>
+                <Route path='home'>
+                  <Route index element={<HomePage />} />
+                </Route>
 
-            <Route path='users'>
-              <Route element={<AdminRequired />}>
-                <Route index element={<UsersPage />} />
-              </Route>
-              <Route path='new' element={<NewUserForm />} />
-              <Route path=':id/edit' element={<EditUser />} />
-            </Route>
+                <Route path='users'>
+                  <Route element={<AdminRequired />}>
+                    <Route index element={<UsersPage />} />
+                  </Route>
+                  <Route path='new' element={<NewUserForm />} />
+                  <Route path=':id/edit' element={<EditUser />} />
+                </Route>
 
-            <Route path='journalEntrys'>
-              <Route element={<AdminRequired />}>
-                <Route index element={<JournalEntrysPage />} />
-              </Route>
-              <Route path='new' element={<NewJournalEntry />} />
-              <Route path=':id/edit' element={<EditJournalEntry />} />
-            </Route>
+                <Route path='journalEntrys'>
+                  <Route element={<AdminRequired />}>
+                    <Route index element={<JournalEntrysPage />} />
+                  </Route>
+                  <Route path='new' element={<NewJournalEntry />} />
+                  <Route path=':id/edit' element={<EditJournalEntry />} />
+                </Route>
 
-            <Route path='trails'>
-              <Route element={<AdminRequired />}>
-                <Route index element={<TrailsPage />} />
-                <Route path='new' element={<NewTrailForm />} />
-                <Route path=':id/edit' element={<EditTrail />} />
+                <Route path='trails'>
+                  <Route element={<AdminRequired />}>
+                    <Route index element={<TrailsPage />} />
+                    <Route path='new' element={<NewTrailForm />} />
+                    <Route path=':id/edit' element={<EditTrail />} />
+                  </Route>
+                </Route>
               </Route>
             </Route>
-          </Route>
-        </Route>
-      </Routes>
-    </div>
+          </Routes>
+        </FlexContainer>
+      </div>
+    </>
   );
 };
 

@@ -1,11 +1,9 @@
 import React from 'react';
-import { selectActiveTrailId, setActiveTrailId } from './homeSlice';
+import { setActiveTrailId } from './homeSlice';
 import { useDispatch } from 'react-redux';
 
 const TrailSelector = ({ trails, trailId, setTrailId }) => {
-  console.log('trailId', trailId);
   const dispatch = useDispatch();
-  dispatch(setActiveTrailId({ trailId }));
 
   const handleTrailIdChange = (e) => {
     e.preventDefault();

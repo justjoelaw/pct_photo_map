@@ -1,5 +1,7 @@
 import { useGetJournalEntrysQuery } from './journalEntrysApiSlice.js';
 import JournalEntry from './JournalEntry.js';
+import Table from '../../components/Table.js';
+import FlexContainer from '../../components/FlexContainer.js';
 
 const JournalEntrysList = () => {
   const {
@@ -30,21 +32,9 @@ const JournalEntrysList = () => {
     });
 
     content = (
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Date</th>
-            <th>User</th>
-            <th>Latitude</th>
-            <th>Longitude</th>
-            <th>Trail</th>
-            <th>Public</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>{tableRows}</tbody>
-      </table>
+      <FlexContainer primary>
+        <Table colNames={['Title', 'Date', 'User', 'Latitude', 'Longitude', 'Trail', 'Public', '']} tableRows={tableRows}></Table>
+      </FlexContainer>
     );
   }
 

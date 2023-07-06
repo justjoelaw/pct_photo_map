@@ -4,7 +4,6 @@ import JournalEntryMarker from './JournalEntryMarker';
 
 function SetBoundsComponent({ bounds }) {
   const map = useMap();
-  console.log('bounds are ', bounds);
   map.fitBounds(bounds);
   return null;
 }
@@ -61,17 +60,15 @@ function TrailMap({ trailId, filteredJournalEntrys }) {
   });
 
   return (
-    <>
-      <MapContainer scrollWheelZoom={true}>
-        <TileLayer
-          url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {journalEntryMarkers}
-        <Polyline positions={coordinates} ref={polylineRef} />
-        <SetBoundsComponent bounds={bounds} />
-      </MapContainer>
-    </>
+    <MapContainer id='mapContainer' scrollWheelZoom={true}>
+      <TileLayer
+        url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      />
+      {journalEntryMarkers}
+      <Polyline positions={coordinates} ref={polylineRef} />
+      <SetBoundsComponent bounds={bounds} />
+    </MapContainer>
   );
 }
 

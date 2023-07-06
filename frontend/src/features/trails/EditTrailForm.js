@@ -3,11 +3,11 @@ import { useUpdateTrailMutation, useDeleteTrailMutation } from './trailsApiSlice
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
 
-const NAME_REGEX = /^[A-z\s\-\:]{3,100}$/;
+const NAME_REGEX = /^[A-z\s\-:]{3,100}$/;
 
 const EditTrailForm = ({ trail }) => {
   const [updateTrail, { isLoading, isSuccess, isError, error }] = useUpdateTrailMutation();
-  const [deleteTrail, { isSuccess: isDelSuccess, isError: isDelError, error: delError }] = useDeleteTrailMutation();
+  const [deleteTrail, { isSuccess: isDelSuccess }] = useDeleteTrailMutation();
 
   const navigate = useNavigate();
 

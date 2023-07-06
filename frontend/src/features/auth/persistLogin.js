@@ -15,7 +15,6 @@ const PersistLogin = () => {
   const [refresh, { isUninitialized, isLoading, isSuccess, isError, error }] = useRefreshMutation();
 
   useEffect(() => {
-    console.log('test');
     if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
       // Accounting for strict-mode
 
@@ -37,7 +36,7 @@ const PersistLogin = () => {
     return () => {
       effectRan.current = true;
     };
-  }, []);
+  }, [persist, refresh, token]);
 
   let content;
   if (!persist) {

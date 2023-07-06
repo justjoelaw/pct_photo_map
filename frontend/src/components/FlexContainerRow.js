@@ -1,7 +1,14 @@
 import React from 'react';
+import className from 'classnames';
 
-const FlexContainerRow = ({ children }) => {
-  return <div className='flex flex-row bg-gray-300'>{children}</div>;
+const FlexContainerRow = ({ children, ...rest }) => {
+  const classes = className(rest.className, 'flex flex-row');
+
+  return (
+    <div {...rest} className={classes}>
+      {children}
+    </div>
+  );
 };
 
 export default FlexContainerRow;

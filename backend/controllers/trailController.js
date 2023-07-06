@@ -22,7 +22,7 @@ const getAllTrails = asyncHandler(async (req, res) => {
 // @access Private
 const createNewTrail = asyncHandler(async (req, res) => {
   if (!req.isAdmin) {
-    res.status(403).send('You do not have permission to access this resource');
+    return res.status(403).send('You do not have permission to access this resource');
   }
 
   const { name } = req.body;
@@ -44,9 +44,9 @@ const createNewTrail = asyncHandler(async (req, res) => {
 
   if (trail) {
     //created
-    res.status(201).json({ message: `New trail ${name} created` });
+    return res.status(201).json({ message: `New trail ${name} created` });
   } else {
-    res.status(400).json({ message: 'Unable to create trail' });
+    return res.status(400).json({ message: 'Unable to create trail' });
   }
 });
 
