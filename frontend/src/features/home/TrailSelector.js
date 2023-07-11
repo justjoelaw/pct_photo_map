@@ -1,6 +1,9 @@
 import React from 'react';
 import { setActiveTrailId } from './homeSlice';
 import { useDispatch } from 'react-redux';
+import Label from '../../components/Label';
+import FlexContainerRow from '../../components/FlexContainerRow';
+import FlexContainer from '../../components/FlexContainer';
 
 const TrailSelector = ({ trails, trailId, setTrailId }) => {
   const dispatch = useDispatch();
@@ -24,10 +27,16 @@ const TrailSelector = ({ trails, trailId, setTrailId }) => {
     <div>
       <div>Which trail would you like to view entries for?</div>
       <form>
-        <label htmlFor='trail'>Trail:</label>
-        <select id='trail' name='trail' value={trailId} onChange={handleTrailIdChange}>
-          {trailOptions}
-        </select>
+        <FlexContainer className='items-center'>
+          <FlexContainerRow>
+            <Label inline htmlFor='trail'>
+              Trail:
+            </Label>
+            <select id='trail' name='trail' value={trailId} onChange={handleTrailIdChange}>
+              {trailOptions}
+            </select>
+          </FlexContainerRow>
+        </FlexContainer>
       </form>
     </div>
   );

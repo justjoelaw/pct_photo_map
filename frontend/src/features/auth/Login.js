@@ -10,6 +10,7 @@ import FlexContainer from '../../components/FlexContainer';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import FlexContainerRow from '../../components/FlexContainerRow';
+import Label from '../../components/Label';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -67,15 +68,15 @@ const Login = () => {
             <form onSubmit={handleFormSubmit}>
               <FlexContainer className='space-y-5'>
                 <FlexContainerRow>
-                  <label htmlFor='username' className='w-40'>
+                  <Label normal htmlFor='username' className='w-40'>
                     Username:
-                  </label>
+                  </Label>
                   <Input id='username' name='username' autoComplete='off' type='text' value={username} onChange={handleUsernameChange} textInput />
                 </FlexContainerRow>
                 <FlexContainerRow>
-                  <label htmlFor='password' className='w-40'>
+                  <Label normal htmlFor='password' className='w-40'>
                     Password:
-                  </label>
+                  </Label>
                   <Input
                     id='password'
                     name='password'
@@ -92,7 +93,9 @@ const Login = () => {
                     Login
                   </Button>
                   <FlexContainerRow>
-                    <label htmlFor='persist'>Trust this device?</label>
+                    <Label normal htmlFor='persist'>
+                      Trust this device?
+                    </Label>
                     <input id='persist' type='checkbox' checked={persist} onChange={handlePersistChange} />
                   </FlexContainerRow>
                 </FlexContainer>

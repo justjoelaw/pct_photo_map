@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { verifyLocation } from './utils/journalEntryUtils';
 import useAuth from '../../hooks/useAuth';
 import { useSelector } from 'react-redux';
-import { selectActiveTrailId } from '../home/homeSlice';
+import { selectActiveTrailId, selectMapClickCoords } from '../home/homeSlice';
 import FlexContainer from '../../components/FlexContainer';
 import FlexContainerRow from '../../components/FlexContainerRow';
 import Input from '../../components/Input';
@@ -17,6 +17,8 @@ const NewJournalEntryForm = ({ users, trails }) => {
   const { userId: activeUserId, isAdmin } = useAuth();
   const activeTrailId = useSelector(selectActiveTrailId);
 
+  const mapClickCoords = useSelector(selectMapClickCoords);
+
   const navigate = useNavigate();
 
   const [title, setTitle] = useState('');
@@ -24,8 +26,8 @@ const NewJournalEntryForm = ({ users, trails }) => {
   const [date, setDate] = useState('');
   const [userId, setUserId] = useState(activeUserId ?? users[0].id);
   const [trailId, setTrailId] = useState(activeTrailId ?? trails[0].id);
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
+  const [latitude, setLatitude] = useState(mapClickCoords[0] ?? 0);
+  const [longitude, setLongitude] = useState(mapClickCoords[1] ?? 0);
   const [validLocation, setValidLocation] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
 
@@ -46,6 +48,11 @@ const NewJournalEntryForm = ({ users, trails }) => {
   useEffect(() => {
     verifyLocation(latitude, longitude, setValidLocation);
   }, [latitude, longitude]);
+
+  useEffect(() => {
+    setLatitude(mapClickCoords[0]);
+    setLongitude(mapClickCoords[1]);
+  }, [mapClickCoords]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -136,49 +143,66 @@ const NewJournalEntryForm = ({ users, trails }) => {
         <form onSubmit={handleFormSubmit} className='h-full'>
           <FlexContainer className='h-full space-y-5'>
             <FlexContainerRow>
-              <Label htmlFor='title'>Title:</Label>
+              <Label small htmlFor='title'>
+                Title:
+              </Label>
               <Input id='title' name='title' autoComplete='off' type='text' className='textInput' value={title} onChange={handleTitleChange} />
             </FlexContainerRow>
             <FlexContainerRow>
-              <Label htmlFor='date'>Date:</Label>
+              <Label small htmlFor='date'>
+                Date:
+              </Label>
               <Input id='date' name='date' type='date' value={date} onChange={handleDateChange} />
             </FlexContainerRow>
 
             {isAdmin && (
               <FlexContainerRow>
-                <Label htmlFor='user'>User:</Label>
+                <Label small htmlFor='user'>
+                  User:
+                </Label>
                 <select id='username' name='username' className='rounded-lg border-2 border-slate-600' value={userId} onChange={handleUserIdChange}>
                   {userOptions}
                 </select>
               </FlexContainerRow>
             )}
             <FlexContainerRow>
-              <Label htmlFor='trail'>Trail:</Label>
+              <Label small htmlFor='trail'>
+                Trail:
+              </Label>
               <select id='trail' name='trail' className='rounded-lg border-2 border-slate-600' value={trailId} onChange={handleTrailIdChange}>
                 {trailOptions}
               </select>
             </FlexContainerRow>
+            <p>Enter coordinates manually, or click on map</p>
             <FlexContainerRow>
-              <Label htmlFor='latitude'>Latitude:</Label>
+              <Label small htmlFor='latitude'>
+                Latitude:
+              </Label>
               <Input id='latitude' type='number' className='textInput' value={latitude} onChange={handleLatitudeChange} />
             </FlexContainerRow>
             <FlexContainerRow>
-              <Label htmlFor='longitude'>Longitude:</Label>
+              <Label small htmlFor='longitude'>
+                Longitude:
+              </Label>
               <Input id='longitude' type='number' className='textInput' value={longitude} onChange={handleLongitudeChange} />
             </FlexContainerRow>
             <FlexContainerRow>
-              <Label htmlFor='isPublic'>Public:</Label>
+              <Label small htmlFor='isPublic'>
+                Public:
+              </Label>
               <input id='isPublic' name='isPublic' type='checkbox' value={isPublic} onChange={handleIsPublicChange} />
             </FlexContainerRow>
             <FlexContainer className='h-full grow'>
               <FlexContainerRow>
-                <Label htmlFor='text'>Text:</Label>
+                <Label inline htmlFor='text'>
+                  Text:
+                </Label>
                 <FlexContainer className='grow'>
                   <textarea
                     id='journalText'
                     name='journalText'
                     type='text'
-                    rows='10'
+                    rows='3'
                     className='p-2.5 rounded-lg border-2 border-slate-600'
                     value={journalText}
                     onChange={handleJournalTextChange}

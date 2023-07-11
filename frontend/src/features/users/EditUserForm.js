@@ -103,26 +103,28 @@ const EditUserForm = ({ user }) => {
       <form onSubmit={handleFormSubmit}>
         <FlexContainer>
           <FlexContainerRow>
-            <Label htmlFor='username'>
+            <Label normal htmlFor='username'>
               Username: <span className='nowrap'>[3-20 letters]</span>
             </Label>
             <Input id='username' name='username' autoComplete='off' type='text' value={username} onChange={handleUsernameChange} />
           </FlexContainerRow>
           <FlexContainerRow>
-            <Label htmlFor='email' className='w-80'>
+            <Label normal htmlFor='email' className='w-80'>
               Email:
             </Label>
             <Input id='email' name='email' autoComplete='off' type='text' className='textInput' value={email} onChange={handleEmailChange} />
           </FlexContainerRow>
 
           <FlexContainerRow>
-            <Label htmlFor='password'>
+            <Label normal htmlFor='password'>
               Password: <span className='nowrap'>[4-12 chars incl. !@#$%]</span>
             </Label>
             <Input id='password' name='password' autoComplete='off' type='password' value={password} onChange={handlePasswordChange} />
           </FlexContainerRow>
           <FlexContainerRow>
-            <Label htmlFor='isAdmin'>Admin:</Label>
+            <Label normal htmlFor='isAdmin'>
+              Admin:
+            </Label>
             <Input id='isAdmin' name='isAdmin' type='checkbox' checked={isAdmin} value={isAdmin} onChange={handleisAdminChange} />
           </FlexContainerRow>
           <FlexContainerRow>
