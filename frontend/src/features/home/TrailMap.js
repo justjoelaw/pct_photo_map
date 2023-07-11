@@ -1,14 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Polyline, useMap } from 'react-leaflet';
 import JournalEntryMarker from './JournalEntryMarker';
+import { useDispatch } from 'react-redux';
+import { setMapClickCoords } from './homeSlice';
+let map;
 
 function SetBoundsComponent({ bounds }) {
-  const map = useMap();
+  map = useMap();
   map.fitBounds(bounds);
   return null;
 }
 
 function TrailMap({ trailId, filteredJournalEntrys }) {
+  const dispatch = useDispatch();
   const [coordinates, setCoordinates] = useState([[0, 0]]);
   const [bounds, setBounds] = useState([
     [0, 0],
@@ -29,6 +33,14 @@ function TrailMap({ trailId, filteredJournalEntrys }) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (map) {
+      map.on('click', (e) => {
+        dispatch(setMapClickCoords({ coords: [e.latlng.lat, e.latlng.lng] }));
+      });
+    }
+  }, [map]);
 
   useEffect(() => {
     switch (trailId) {

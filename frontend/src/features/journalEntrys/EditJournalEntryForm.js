@@ -141,42 +141,58 @@ const EditJournalEntryForm = ({ users, trails, journalEntry }) => {
         <form onSubmit={handleFormSubmit}>
           <FlexContainer className='h-full space-y-5'>
             <FlexContainerRow>
-              <Label htmlFor='title'>Title:</Label>
+              <Label normal htmlFor='title'>
+                Title:
+              </Label>
               <Input id='title' name='title' autoComplete='off' type='text' className='textInput' value={title} onChange={handleTitleChange} />
             </FlexContainerRow>
             <FlexContainerRow>
-              <Label htmlFor='date'>Date:</Label>
+              <Label normal htmlFor='date'>
+                Date:
+              </Label>
               <Input id='date' name='date' type='date' className='textInput' value={date} onChange={handleDateChange} />
             </FlexContainerRow>
 
             {isAdmin && (
               <FlexContainerRow>
-                <Label htmlFor='user'>User:</Label>
+                <Label normal htmlFor='user'>
+                  User:
+                </Label>
                 <select id='username' name='username' value={userId} onChange={handleUserIdChange}>
                   {userOptions}
                 </select>
               </FlexContainerRow>
             )}
             <FlexContainerRow>
-              <Label htmlFor='trail'>Trail:</Label>
+              <Label normal htmlFor='trail'>
+                Trail:
+              </Label>
               <select id='trail' name='trail' className='rounded-lg border-2 border-slate-600' value={trailId} onChange={handleTrailIdChange}>
                 {trailOptions}
               </select>
             </FlexContainerRow>
             <FlexContainerRow>
-              <Label htmlFor='latitude'>Latitude:</Label>
+              <Label normal htmlFor='latitude'>
+                Latitude:
+              </Label>
               <Input id='latitude' type='number' className='textInput' value={latitude} onChange={handleLatitudeChange} />
             </FlexContainerRow>
             <FlexContainerRow>
-              <Label htmlFor='longitude'>Longitude:</Label>
+              <Label normal htmlFor='longitude'>
+                Longitude:
+              </Label>
               <Input id='longitude' type='number' className='textInput' value={longitude} onChange={handleLongitudeChange} />
             </FlexContainerRow>
             <FlexContainerRow>
-              <Label htmlFor='isPublic'>Public:</Label>
+              <Label normal htmlFor='isPublic'>
+                Public:
+              </Label>
               <Input id='isPublic' name='isPublic' type='checkbox' checked={isPublic} value={isPublic} onChange={handleIsPublicChange} />
             </FlexContainerRow>
             <FlexContainerRow>
-              <Label htmlFor='text'>Text:</Label>
+              <Label normal htmlFor='text'>
+                Text:
+              </Label>
               <FlexContainer className='grow'>
                 <textarea
                   id='journalText'

@@ -6,6 +6,7 @@ import useAuth from '../../hooks/useAuth';
 import FlexContainer from '../../components/FlexContainer';
 import FlexContainerRow from '../../components/FlexContainerRow';
 import Header from '../../components/Header';
+import Label from '../../components/Label';
 
 const USER_REGEX = /^[A-z0-9]{3,20}$/;
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/;
@@ -102,27 +103,29 @@ const NewUserForm = () => {
             <form onSubmit={handleFormSubmit}>
               <FlexContainer className='space-y-5'>
                 <FlexContainerRow>
-                  <label htmlFor='username' className='w-80'>
+                  <Label normal htmlFor='username' className='w-80'>
                     Username: <span className='nowrap'>[3-20 letters]</span>
-                  </label>
+                  </Label>
                   <input id='username' name='username' autoComplete='off' type='text' value={username} onChange={handleUsernameChange} />
                 </FlexContainerRow>
                 <FlexContainerRow>
-                  <label htmlFor='email' className='w-80'>
+                  <Label normal htmlFor='email' className='w-80'>
                     Email:
-                  </label>
+                  </Label>
                   <input id='email' name='email' autoComplete='off' type='text' value={email} onChange={handleEmailChange} />
                 </FlexContainerRow>
                 <FlexContainerRow>
-                  <label htmlFor='password' className='w-80'>
+                  <Label normal htmlFor='password' className='w-80'>
                     Password: <span className='nowrap'>[4-12 chars incl. !@#$%]</span>
-                  </label>
+                  </Label>
                   <input id='password' name='password' autoComplete='off' type='password' value={password} onChange={handlePasswordChange} />
                 </FlexContainerRow>
                 <FlexContainerRow>
                   {activeUserIsAdmin && (
                     <>
-                      <label htmlFor='isAdmin'>Admin:</label>
+                      <Label normal htmlFor='isAdmin'>
+                        Admin:
+                      </Label>
                       <input id='isAdmin' name='isAdmin' type='checkbox' value={isAdmin} onChange={handleisAdminChange} />
                     </>
                   )}

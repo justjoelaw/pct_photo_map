@@ -9,9 +9,10 @@ import FlexContainer from '../../components/FlexContainer';
 import FlexContainerRow from '../../components/FlexContainerRow';
 import useAuth from '../../hooks/useAuth';
 import { selectAllJournalEntrys } from '../journalEntrys/journalEntrysApiSlice';
-import { selectDisplayedJournalEntry } from './homeSlice';
+import { selectDisplayedJournalEntry, selectNewJournalEntryActive } from './homeSlice';
 import AddEntryButton from './buttons/AddEntryButton';
 import { selectActiveTrailId, setActiveTrailId } from './homeSlice';
+import NewJournalEntry from '../journalEntrys/NewJournalEntry';
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -24,7 +25,10 @@ const HomePage = () => {
   const { userId } = useAuth();
 
   const displayedJournalEntry = useSelector(selectDisplayedJournalEntry);
-  console.log('displayedJOurnalENtry is', displayedJournalEntry);
+  console.log('displayedJournalEntry is', displayedJournalEntry);
+
+  const newJournalEntryActive = useSelector(selectNewJournalEntryActive);
+  console.log('newJournalEntryActive is ', newJournalEntryActive);
 
   useEffect(() => {
     // Account for delay in prefetch
@@ -62,6 +66,7 @@ const HomePage = () => {
         </div>
         <div id='q4' className='basis-1/2 h-full'>
           {displayedJournalEntry && <DisplayJournalEntry entryId={displayedJournalEntry} />}
+          {newJournalEntryActive && <NewJournalEntry />}
         </div>
       </FlexContainerRow>
     </FlexContainer>

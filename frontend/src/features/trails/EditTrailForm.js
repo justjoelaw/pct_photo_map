@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useUpdateTrailMutation, useDeleteTrailMutation } from './trailsApiSlice';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
+import Label from '../../components/Label';
 
 const NAME_REGEX = /^[A-z\s\-:]{3,100}$/;
 
@@ -60,9 +61,9 @@ const EditTrailForm = ({ trail }) => {
     <div>
       <p className={errClass}>{error?.data?.message}</p>
       <form onSubmit={handleFormSubmit}>
-        <label htmlFor='name'>
+        <Label normal htmlFor='name'>
           Name: <span className='nowrap'>[3-100 letters]</span>
-        </label>
+        </Label>
         <input id='name' name='name' autoComplete='off' type='text' value={name} onChange={handleNameChange} />
         <Button primary rounded onClick={handleFormSubmit}>
           Save Trail

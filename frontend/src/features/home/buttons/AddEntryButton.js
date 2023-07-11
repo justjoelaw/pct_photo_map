@@ -1,12 +1,17 @@
 import Button from '../../../components/Button';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setNewJournalEntryActive, setDisplayedJournalEntry } from '../homeSlice';
 
 const AddEntryButton = ({ className }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClick = () => {
-    navigate('/journalEntrys/new');
+    // navigate('/journalEntrys/new');
+    dispatch(setNewJournalEntryActive({ activeBool: true }));
+    dispatch(setDisplayedJournalEntry({ journalEntryId: null }));
   };
 
   return (
