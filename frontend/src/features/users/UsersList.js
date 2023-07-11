@@ -35,7 +35,7 @@ const UsersList = () => {
 
     content = (
       <FlexContainer primary>
-        <Table colNames={['ID', 'Username', 'isAdmin', '']} tableRows={tableRows}></Table>
+        <Table colNames={['ID', 'Username', 'Email', 'isAdmin', '']} tableRows={tableRows}></Table>
       </FlexContainer>
     );
   }

@@ -112,7 +112,7 @@ const NewUserForm = () => {
                   <Label normal htmlFor='email' className='w-80'>
                     Email:
                   </Label>
-                  <input id='email' name='email' autoComplete='off' type='text' value={email} onChange={handleEmailChange} />
+                  <input id='email' name='email' autoComplete='nope' type='email' value={email} onChange={handleEmailChange} />
                 </FlexContainerRow>
                 <FlexContainerRow>
                   <Label normal htmlFor='password' className='w-80'>

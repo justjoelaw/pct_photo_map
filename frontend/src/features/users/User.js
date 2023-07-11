@@ -20,6 +20,7 @@ const User = ({ userId }) => {
     <TableRow>
       <TableData>{user.id}</TableData>
       <TableData>{user.username}</TableData>
+      <TableData>{user.email}</TableData>
       <TableData>{user.isAdmin ? <FontAwesomeIcon icon={faSquareCheck} /> : <FontAwesomeIcon icon={faSquare} />}</TableData>
       <TableData>
         <Button primary onClick={handleEdit}>
