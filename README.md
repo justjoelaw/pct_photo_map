@@ -16,4 +16,5 @@ The app utilises the following technologies:
 
 ## Usage
 Add and view journal entries on a map of your hiking trail:
-![add_journal_entry_5](https://github.com/justjoelaw/pct_photo_map/assets/57088672/57fe43fa-7e51-40c7-8ba7-2d92a5bbf795)
+
+![add_journal_entry_5](https://github.com/justjoelaw/pct_photo_map/assets/57088672/125e036d-5afd-4a92-b8ff-6caf6b8e279f)
